@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:start_date/blocs/swipe/swipe_bloc.dart';
 import 'package:start_date/models/user_model.dart';
 import 'package:start_date/screens/home/home_screen.dart';
+import 'package:start_date/screens/matches/matches_screen.dart';
 import 'package:start_date/screens/onboarding/onboarding_screen.dart';
 import 'package:start_date/screens/users/users_screen.dart';
 
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: OnboardingScreen(),
+        home: MatchesScreen(),
       ),
     );
   }

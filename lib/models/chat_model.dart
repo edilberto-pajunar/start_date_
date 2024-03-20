@@ -41,5 +41,14 @@ class Chat extends Equatable {
                 message.senderId == 1 && message.receiverId == 3 ||
                 message.senderId == 3 && message.receiverId == 1)
             .toList()),
+    Chat(
+        id: 3,
+        userId: 1,
+        matchedUserId: 4,
+        messages: Message.messages
+            .where((message) =>
+                message.senderId == 1 && message.receiverId == 4 ||
+                message.senderId == 4 && message.receiverId == 1)
+            .toList()),
   ];
 }

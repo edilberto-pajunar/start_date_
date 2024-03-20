@@ -4,9 +4,13 @@ class UserImageSmall extends StatelessWidget {
   const UserImageSmall({
     super.key,
     required this.imageUrl,
+    this.height = 60,
+    this.width = 60,
   });
 
   final String imageUrl;
+  final double height;
+  final double width;
 
   @override
   Widget build(BuildContext context) {
