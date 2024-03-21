@@ -29,7 +29,7 @@ class EmailVerification extends StatelessWidget {
                 text: "Did You Get the Verification Code?",
               ),
               CustomTextField(
-                tabController: tabController,
+                controller: TextEditingController(),
                 text: "ENTER YOUR CODE",
               ),
             ],

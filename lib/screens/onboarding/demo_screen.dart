@@ -37,8 +37,8 @@ class Demo extends StatelessWidget {
                 text: "What's Your Age?",
               ),
               CustomTextField(
-                tabController: tabController,
                 text: "ENTER YOUR AGE",
+                controller: TextEditingController(),
               ),
             ],
           ),

@@ -1,13 +1,18 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:start_date/blocs/swipe/swipe_bloc.dart';
+import 'package:start_date/firebase_options.dart';
 import 'package:start_date/models/user_model.dart';
-import 'package:start_date/screens/home/home_screen.dart';
-import 'package:start_date/screens/matches/matches_screen.dart';
 import 'package:start_date/screens/onboarding/onboarding_screen.dart';
-import 'package:start_date/screens/users/users_screen.dart';
+import 'package:start_date/screens/profile/profile_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -24,7 +29,7 @@ class MyApp extends StatelessWidget {
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: MatchesScreen(),
+        home: OnboardingScreen(),
       ),
     );
   }

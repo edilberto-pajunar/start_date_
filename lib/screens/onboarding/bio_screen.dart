@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:start_date/widgets/custom_button.dart';
 import 'package:start_date/widgets/custom_text_container.dart';
 import 'package:start_date/widgets/custom_text_field.dart';
@@ -29,7 +30,7 @@ class Bio extends StatelessWidget {
                 text: "Describe Yourself a Bit",
               ),
               CustomTextField(
-                tabController: tabController,
+                controller: TextEditingController(),
                 text: "ENTER YOUR BIO",
               ),
               const SizedBox(height: 100.0),
@@ -37,28 +38,20 @@ class Bio extends StatelessWidget {
                 tabController: tabController,
                 text: "What Do You Like?",
               ),
-              Row(
+              const Row(
                 children: [
-                  CustomTextContainer(
-                      tabController: tabController, text: "MUSIC"),
-                  CustomTextContainer(
-                      tabController: tabController, text: "ECONOMICS"),
-                  CustomTextContainer(
-                      tabController: tabController, text: "ART"),
-                  CustomTextContainer(
-                      tabController: tabController, text: "POLITICS"),
+                  CustomTextContainer(text: "MUSIC"),
+                  CustomTextContainer(text: "ECONOMICS"),
+                  CustomTextContainer(text: "ART"),
+                  CustomTextContainer(text: "POLITICS"),
                 ],
               ),
-              Row(
+              const Row(
                 children: [
-                  CustomTextContainer(
-                      tabController: tabController, text: "NATURE"),
-                  CustomTextContainer(
-                      tabController: tabController, text: "HIKING"),
-                  CustomTextContainer(
-                      tabController: tabController, text: "FOOTBALL"),
-                  CustomTextContainer(
-                      tabController: tabController, text: "MOVIES"),
+                  CustomTextContainer(text: "NATURE"),
+                  CustomTextContainer(text: "HIKING"),
+                  CustomTextContainer(text: "FOOTBALL"),
+                  CustomTextContainer(text: "MOVIES"),
                 ],
               ),
             ],
