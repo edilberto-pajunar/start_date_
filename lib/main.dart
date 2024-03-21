@@ -1,9 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:start_date/blocs/auth/auth_bloc.dart';
 import 'package:start_date/blocs/swipe/swipe_bloc.dart';
 import 'package:start_date/firebase_options.dart';
 import 'package:start_date/models/user_model.dart';
+import 'package:start_date/repositories/auth_repository.dart';
 import 'package:start_date/screens/onboarding/onboarding_screen.dart';
 import 'package:start_date/screens/profile/profile_screen.dart';
 
@@ -21,15 +23,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
+    return MultiRepositoryProvider(
       providers: [
-        BlocProvider(
-          create: (_) => SwipeBloc()..add(LoadUsersEvent(users: User.users)),
-        ),
+        RepositoryProvider(create: (context) => AuthRepository()),
       ],
-      child: const MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: OnboardingScreen(),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+              create: (context) =>
+                  AuthBloc(authRepository: context.read<AuthRepository>())),
+          BlocProvider(
+            create: (_) => SwipeBloc()..add(LoadUsersEvent(users: User.users)),
+          ),
+        ],
+        child: const MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: OnboardingScreen(),
+        ),
       ),
     );
   }
