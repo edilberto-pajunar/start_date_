@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:start_date/repositories/storage/storage_repository.dart';
 
 class CustomImageContainer extends StatelessWidget {
   const CustomImageContainer({
@@ -27,7 +29,23 @@ class CustomImageContainer extends StatelessWidget {
           alignment: Alignment.bottomRight,
           child: IconButton(
             icon: const Icon(Icons.add_circle),
-            onPressed: () {},
+            onPressed: () async {
+              ImagePicker picker = ImagePicker();
+              final XFile? image = await picker.pickImage(
+                source: ImageSource.gallery,
+              );
+
+              if (image == null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("No image was selected.")),
+                );
+              }
+
+              if (image != null) {
+                print("Uploading...");
+                StorageRepository().uploadImage(image);
+              }
+            },
           ),
         ),
       ),

@@ -4,16 +4,17 @@ class CustomTextField extends StatelessWidget {
   const CustomTextField({
     super.key,
     required this.text,
-    required this.controller,
+    this.controller,
+    this.onChanged,
   });
 
   final String text;
-  final TextEditingController controller;
+  final TextEditingController? controller;
+  final Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: controller,
       decoration: InputDecoration(
         filled: true,
         fillColor: Colors.white,
@@ -26,6 +27,7 @@ class CustomTextField extends StatelessWidget {
           borderSide: BorderSide(color: Colors.white),
         ),
       ),
+      onChanged: onChanged,
     );
   }
 }

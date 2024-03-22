@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:start_date/blocs/auth/auth_bloc.dart';
 import 'package:start_date/blocs/swipe/swipe_bloc.dart';
+import 'package:start_date/cubits/signup/signup_cubit.dart';
 import 'package:start_date/firebase_options.dart';
 import 'package:start_date/models/user_model.dart';
-import 'package:start_date/repositories/auth_repository.dart';
+import 'package:start_date/repositories/auth/auth_repository.dart';
 import 'package:start_date/screens/onboarding/onboarding_screen.dart';
 import 'package:start_date/screens/profile/profile_screen.dart';
 
@@ -33,7 +34,11 @@ class MyApp extends StatelessWidget {
               create: (context) =>
                   AuthBloc(authRepository: context.read<AuthRepository>())),
           BlocProvider(
-            create: (_) => SwipeBloc()..add(LoadUsersEvent(users: User.users)),
+              create: (context) =>
+                  SignupCubit(authRepository: context.read<AuthRepository>())),
+          BlocProvider(
+            create: (context) =>
+                SwipeBloc()..add(LoadUsersEvent(users: User.users)),
           ),
         ],
         child: const MaterialApp(
