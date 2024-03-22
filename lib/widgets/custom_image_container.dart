@@ -5,10 +5,10 @@ import 'package:start_date/repositories/storage/storage_repository.dart';
 class CustomImageContainer extends StatelessWidget {
   const CustomImageContainer({
     super.key,
-    required this.tabController,
+    this.imageUrl,
   });
 
-  final TabController tabController;
+  final String? imageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -25,29 +25,34 @@ class CustomImageContainer extends StatelessWidget {
             ),
           ),
         ),
-        child: Align(
-          alignment: Alignment.bottomRight,
-          child: IconButton(
-            icon: const Icon(Icons.add_circle),
-            onPressed: () async {
-              ImagePicker picker = ImagePicker();
-              final XFile? image = await picker.pickImage(
-                source: ImageSource.gallery,
-              );
+        child: imageUrl == null
+            ? Align(
+                alignment: Alignment.bottomRight,
+                child: IconButton(
+                  icon: const Icon(Icons.add_circle),
+                  onPressed: () async {
+                    ImagePicker picker = ImagePicker();
+                    final XFile? image = await picker.pickImage(
+                      source: ImageSource.gallery,
+                    );
 
-              if (image == null) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("No image was selected.")),
-                );
-              }
+                    if (image == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("No image was selected.")),
+                      );
+                    }
 
-              if (image != null) {
-                print("Uploading...");
-                StorageRepository().uploadImage(image);
-              }
-            },
-          ),
-        ),
+                    if (image != null) {
+                      print("Uploading...");
+                      StorageRepository().uploadImage(image);
+                    }
+                  },
+                ),
+              )
+            : Image.network(
+                imageUrl!,
+                fit: BoxFit.cover,
+              ),
       ),
     );
   }

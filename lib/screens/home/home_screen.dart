@@ -41,12 +41,12 @@ class HomeScreen extends StatelessWidget {
                       if (drag.velocity.pixelsPerSecond.dx < 0) {
                         context
                             .read<SwipeBloc>()
-                            .add(SwipeLeftEvent(user: state.users[0]));
+                            .add(SwipeLeft(user: state.users[0]));
                         print("Swiped Left");
                       } else {
                         context
                             .read<SwipeBloc>()
-                            .add(SwipeRightEvent(user: state.users[0]));
+                            .add(SwipeRight(user: state.users[0]));
                         print("Swiped right");
                       }
                     },
@@ -66,7 +66,7 @@ class HomeScreen extends StatelessWidget {
                         onTap: () {
                           context
                               .read<SwipeBloc>()
-                              .add(SwipeLeftEvent(user: state.users[0]));
+                              .add(SwipeLeft(user: state.users[0]));
                         },
                       ),
                       ChoiceButton(
@@ -78,7 +78,7 @@ class HomeScreen extends StatelessWidget {
                         onTap: () {
                           context
                               .read<SwipeBloc>()
-                              .add(SwipeLeftEvent(user: state.users[0]));
+                              .add(SwipeLeft(user: state.users[0]));
                         },
                       ),
                       ChoiceButton(
