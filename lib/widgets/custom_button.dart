@@ -1,7 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:start_date/blocs/onboarding/onboarding_bloc.dart';
 import 'package:start_date/cubits/signup/signup_cubit.dart';
+import 'package:start_date/models/user_model.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton({
@@ -28,9 +29,30 @@ class CustomButton extends StatelessWidget {
           backgroundColor: Colors.transparent,
         ),
         onPressed: () async {
-          tabController.animateTo(tabController.index + 1);
+          if (tabController.index == 6) {
+            Navigator.pop(context, true);
+          } else {
+            tabController.animateTo(tabController.index + 1);
+          }
           if (tabController.index == 2) {
-            context.read<SignupCubit>().signupWithCredentials();
+            await context
+                .read<SignupCubit>()
+                .signupWithCredentials()
+                .then((value) {
+              User user = User(
+                id: context.read<SignupCubit>().state.user?.uid,
+                name: "",
+                age: 0,
+                gender: "",
+                imageUrls: const [],
+                bio: "",
+                jobTitle: "",
+                interests: const [],
+                location: "",
+              );
+
+              context.read<OnboardingBloc>().add(StartOnboarding(user: user));
+            });
           }
         },
         child: SizedBox(

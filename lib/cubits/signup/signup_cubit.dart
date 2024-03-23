@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:start_date/repositories/auth/auth_repository.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 
 part 'signup_state.dart';
 
@@ -20,16 +21,16 @@ class SignupCubit extends Cubit<SignupState> {
     emit(state.copyWith(password: value, status: SignupStatus.initial));
   }
 
-  void signupWithCredentials() async {
+  Future<void> signupWithCredentials() async {
     if (!state.isValid) return;
 
     try {
-      await _authRepository.signUp(
+      var user = await _authRepository.signUp(
         email: state.email,
         password: state.password,
       );
 
-      emit(state.copyWith(status: SignupStatus.success));
+      emit(state.copyWith(status: SignupStatus.success, user: user));
     } catch (_) {}
   }
 }

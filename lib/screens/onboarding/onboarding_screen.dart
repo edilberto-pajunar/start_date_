@@ -3,6 +3,7 @@ import 'package:start_date/screens/onboarding/bio_screen.dart';
 import 'package:start_date/screens/onboarding/demo_screen.dart';
 import 'package:start_date/screens/onboarding/email_screen.dart';
 import 'package:start_date/screens/onboarding/email_verification_screen.dart';
+import 'package:start_date/screens/onboarding/location_screen.dart';
 import 'package:start_date/screens/onboarding/pictures_screen.dart';
 import 'package:start_date/screens/onboarding/start_screen.dart';
 import 'package:start_date/widgets/custom_appbar.dart';
@@ -28,7 +29,10 @@ class OnboardingScreen extends StatelessWidget {
     ),
     Tab(
       text: "Bio",
-    )
+    ),
+    Tab(
+      text: "Location",
+    ),
   ];
 
   @override
@@ -38,10 +42,6 @@ class OnboardingScreen extends StatelessWidget {
       child: Builder(
         builder: (context) {
           final TabController tabController = DefaultTabController.of(context);
-
-          tabController.addListener(() {
-            if (!tabController.indexIsChanging) {}
-          });
 
           return Scaffold(
             appBar: const CustomAppbar(
@@ -55,6 +55,7 @@ class OnboardingScreen extends StatelessWidget {
                 Demo(tabController: tabController),
                 Pictures(tabController: tabController),
                 Bio(tabController: tabController),
+                Location(tabController: tabController),
               ],
             ),
           );

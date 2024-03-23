@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:start_date/models/user_model.dart';
+import 'package:start_date/screens/chat/chat_screen.dart';
+import 'package:start_date/screens/profile/profile_screen.dart';
 
 class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppbar({
@@ -43,11 +46,17 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
         actions: hasActions
             ? [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    // Navigator.of(context).push(MaterialPageRoute(
+                    //     builder: (context) => ChatScreen(userMatch: )));
+                  },
                   icon: const Icon(Icons.message),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const ProfileScreen()));
+                  },
                   icon: const Icon(Icons.settings),
                 ),
                 const SizedBox(width: 10.0),

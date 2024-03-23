@@ -16,6 +16,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: const CustomAppbar(
         title: "Start Date",
+        hasActions: true,
       ),
       body: BlocBuilder<SwipeBloc, SwipeState>(
         builder: (context, state) {

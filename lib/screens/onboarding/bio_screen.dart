@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:start_date/blocs/onboarding/onboarding_bloc.dart';
 import 'package:start_date/widgets/custom_button.dart';
 import 'package:start_date/widgets/custom_text_container.dart';
 import 'package:start_date/widgets/custom_text_field.dart';
@@ -16,62 +18,79 @@ class Bio extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomTextHeader(
-                tabController: tabController,
-                text: "Describe Yourself a Bit",
-              ),
-              CustomTextField(
-                controller: TextEditingController(),
-                text: "ENTER YOUR BIO",
-              ),
-              const SizedBox(height: 100.0),
-              CustomTextHeader(
-                tabController: tabController,
-                text: "What Do You Like?",
-              ),
-              const Row(
-                children: [
-                  CustomTextContainer(text: "MUSIC"),
-                  CustomTextContainer(text: "ECONOMICS"),
-                  CustomTextContainer(text: "ART"),
-                  CustomTextContainer(text: "POLITICS"),
-                ],
-              ),
-              const Row(
-                children: [
-                  CustomTextContainer(text: "NATURE"),
-                  CustomTextContainer(text: "HIKING"),
-                  CustomTextContainer(text: "FOOTBALL"),
-                  CustomTextContainer(text: "MOVIES"),
-                ],
-              ),
-            ],
-          ),
-          Column(
-            children: [
-              const StepProgressIndicator(
-                totalSteps: 6,
-                currentStep: 5,
-                selectedColor: Colors.black,
-              ),
-              const SizedBox(height: 10.0),
-              CustomButton(
-                tabController: tabController,
-                text: "Next",
-              ),
-            ],
-          ),
-        ],
-      ),
+    return BlocBuilder<OnboardingBloc, OnboardingState>(
+      builder: (context, state) {
+        if (state is OnboardingLoading) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (state is OnboardingLoaded) {
+          return Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomTextHeader(
+                      tabController: tabController,
+                      text: "Describe Yourself a Bit",
+                    ),
+                    CustomTextField(
+                      text: "ENTER YOUR BIO",
+                      onChanged: (val) {
+                        context.read<OnboardingBloc>().add(
+                            UpdateUser(user: state.user.copyWith(bio: val)));
+                      },
+                    ),
+                    const SizedBox(height: 100.0),
+                    CustomTextHeader(
+                      tabController: tabController,
+                      text: "What Do You Like?",
+                    ),
+                    const Row(
+                      children: [
+                        CustomTextContainer(text: "MUSIC"),
+                        CustomTextContainer(text: "ECONOMICS"),
+                        CustomTextContainer(text: "ART"),
+                        CustomTextContainer(text: "POLITICS"),
+                      ],
+                    ),
+                    const Row(
+                      children: [
+                        CustomTextContainer(text: "NATURE"),
+                        CustomTextContainer(text: "HIKING"),
+                        CustomTextContainer(text: "FOOTBALL"),
+                        CustomTextContainer(text: "MOVIES"),
+                      ],
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    const StepProgressIndicator(
+                      totalSteps: 6,
+                      currentStep: 5,
+                      selectedColor: Colors.black,
+                    ),
+                    const SizedBox(height: 10.0),
+                    CustomButton(
+                      tabController: tabController,
+                      text: "Next",
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        } else {
+          return const Text("Something went wrong.");
+        }
+      },
     );
   }
 }
