@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:start_date/models/user_model.dart';
-import 'package:start_date/widgets/user_image_small.dart';
+import 'package:start_date/widgets/user_image.dart';
 
 class UserCard extends StatelessWidget {
   const UserCard({
@@ -24,24 +24,8 @@ class UserCard extends StatelessWidget {
           width: size.width,
           child: Stack(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(
-                      user.imageUrls[0],
-                    ),
-                    fit: BoxFit.cover,
-                  ),
-                  borderRadius: BorderRadius.circular(5.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 4.0,
-                      blurRadius: 4.0,
-                      offset: const Offset(3, 3),
-                    ),
-                  ],
-                ),
+              UserImage.large(
+                url: user.imageUrls[0],
               ),
               Container(
                 decoration: BoxDecoration(
@@ -75,24 +59,33 @@ class UserCard extends StatelessWidget {
                         color: Colors.white,
                       ),
                     ),
-                    Row(
-                      children: [
-                        UserImageSmall(imageUrl: user.imageUrls[0]),
-                        UserImageSmall(imageUrl: user.imageUrls[1]),
-                        UserImageSmall(imageUrl: user.imageUrls[2]),
-                        const SizedBox(width: 10.0),
-                        Container(
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white,
-                          ),
-                          child: const Icon(
-                            Icons.info,
-                            size: 25.0,
-                          ),
-                        ),
-                      ],
-                    ),
+                    SizedBox(
+                      height: 70,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: user.imageUrls.length,
+                        itemBuilder: (context, index) {
+                          return (index < user.imageUrls.length)
+                              ? UserImage.small(
+                                  url: user.imageUrls[index],
+                                  margin: const EdgeInsets.only(
+                                      top: 8.0, right: 8.0),
+                                )
+                              : Container(
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                  ),
+                                  child: const Icon(
+                                    Icons.info,
+                                    size: 25.0,
+                                  ),
+                                );
+                        },
+                      ),
+                    )
                   ],
                 ),
               ),

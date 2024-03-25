@@ -11,6 +11,9 @@ class User extends Equatable {
   final String jobTitle;
   final List<String> interests;
   final String location;
+  final List<String>? swipeLeft;
+  final List<String>? swipeRight;
+  final List<String>? matches;
 
   const User({
     required this.id,
@@ -22,6 +25,9 @@ class User extends Equatable {
     required this.jobTitle,
     required this.interests,
     required this.location,
+    this.swipeLeft,
+    this.swipeRight,
+    this.matches,
   });
 
   @override
@@ -34,19 +40,26 @@ class User extends Equatable {
         bio,
         jobTitle,
         location,
+        swipeRight,
+        swipeLeft,
+        matches,
       ];
 
   static User fromSnapshot(DocumentSnapshot snap) {
     User user = User(
-        id: snap.id,
-        name: snap["name"],
-        age: snap["age"],
-        gender: snap["gender"],
-        imageUrls: (snap["imageUrls"] as List).map((e) => e as String).toList(),
-        bio: snap["bio"],
-        jobTitle: snap["jobTitle"],
-        interests: (snap["interests"] as List).map((e) => e as String).toList(),
-        location: snap["location"]);
+      id: snap.id,
+      name: snap["name"],
+      age: snap["age"],
+      gender: snap["gender"],
+      imageUrls: (snap["imageUrls"] as List).map((e) => e as String).toList(),
+      bio: snap["bio"],
+      jobTitle: snap["jobTitle"],
+      interests: (snap["interests"] as List).map((e) => e as String).toList(),
+      location: snap["location"],
+      swipeLeft: (snap["swipeLeft"] as List).map((e) => e as String).toList(),
+      swipeRight: (snap["swipeRight"] as List).map((e) => e as String).toList(),
+      matches: (snap["matches"] as List).map((e) => e as String).toList(),
+    );
 
     return user;
   }
@@ -61,6 +74,9 @@ class User extends Equatable {
       "jobTitle": jobTitle,
       "interests": interests,
       "location": location,
+      "swipeLeft": swipeLeft,
+      "swipeRight": swipeRight,
+      "matches": matches,
     };
   }
 
@@ -74,6 +90,9 @@ class User extends Equatable {
     String? jobTitle,
     List<String>? interests,
     String? location,
+    List<String>? swipeLeft,
+    List<String>? swipeRight,
+    List<String>? matches,
   }) {
     return User(
       id: id ?? this.id,
@@ -85,6 +104,9 @@ class User extends Equatable {
       jobTitle: jobTitle ?? this.jobTitle,
       interests: interests ?? this.interests,
       location: location ?? this.location,
+      swipeLeft: swipeLeft ?? this.swipeLeft,
+      swipeRight: swipeRight ?? this.swipeRight,
+      matches: matches ?? this.matches,
     );
   }
 

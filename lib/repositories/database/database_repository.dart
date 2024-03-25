@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:start_date/models/user_model.dart';
 import 'package:start_date/repositories/database/base_database_repository.dart';
 import 'package:start_date/repositories/storage/storage_repository.dart';
@@ -44,5 +43,49 @@ class DatabaseRepository extends BaseDatabaseRepository {
         .doc(user.id)
         .update(user.toMap())
         .then((value) => print("User document updated."));
+  }
+
+  @override
+  Stream<List<User>> getUsers(User user) {
+    List<String> userFilter = List.from(user.swipeLeft!)
+      ..addAll(user.swipeRight!)
+      ..add(user.id!);
+
+    return _firebaseFirestore
+        .collection("users")
+        // .where("gender", isNotEqualTo: "Female")
+        // .where(FieldPath.documentId, whereNotIn: userFilter)
+        .snapshots()
+        .map((snap) {
+      return snap.docs.map((user) => User.fromSnapshot(user)).toList();
+    });
+  }
+
+  @override
+  Future<void> updateUserSwipe(
+    String userId,
+    String matchId,
+    bool isSwipeRight,
+  ) async {
+    if (isSwipeRight) {
+      await _firebaseFirestore.collection("users").doc(userId).update({
+        "swipeRight": FieldValue.arrayUnion([matchId])
+      });
+    } else {
+      await _firebaseFirestore.collection("users").doc(userId).update({
+        "swipeLeft": FieldValue.arrayUnion([matchId])
+      });
+    }
+  }
+
+  @override
+  Future<void> updateUserMatch(String userId, String matchId) async {
+    await _firebaseFirestore.collection("users").doc(userId).update({
+      "matches": FieldValue.arrayUnion([matchId])
+    });
+
+    await _firebaseFirestore.collection("users").doc(matchId).update({
+      "matches": FieldValue.arrayUnion([userId])
+    });
   }
 }

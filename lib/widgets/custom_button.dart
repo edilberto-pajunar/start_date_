@@ -51,6 +51,9 @@ class CustomButton extends StatelessWidget {
                 jobTitle: "",
                 interests: const [],
                 location: "",
+                swipeLeft: const [],
+                swipeRight: const [],
+                matches: const [],
               );
 
               context.read<OnboardingBloc>().add(StartOnboarding(user: user));
