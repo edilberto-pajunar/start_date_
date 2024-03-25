@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:start_date/blocs/onboarding/onboarding_bloc.dart';
 import 'package:start_date/cubits/signup/signup_cubit.dart';
 import 'package:start_date/models/user_model.dart';
+import 'package:start_date/screens/splash/splash_screen.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton({
@@ -30,7 +31,8 @@ class CustomButton extends StatelessWidget {
         ),
         onPressed: () async {
           if (tabController.index == 6) {
-            Navigator.pop(context, true);
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => const SplashScreen()));
           } else {
             tabController.animateTo(tabController.index + 1);
           }
