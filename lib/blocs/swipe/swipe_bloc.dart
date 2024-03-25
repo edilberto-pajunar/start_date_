@@ -69,7 +69,7 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
 
       if (!event.user.swipeRight!.contains(userId)) {
         await _databaseRepository.updateUserMatch(userId, event.user.id!);
-        emit(SwipeLoaded(users: users));
+        emit(SwipeMatched(user: event.user));
       } else if (users.isNotEmpty) {
         emit(SwipeLoaded(users: users));
       } else {

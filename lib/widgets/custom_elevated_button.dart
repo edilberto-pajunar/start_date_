@@ -20,6 +20,7 @@ class CustomElevatedButton extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
+        color: color,
         borderRadius: BorderRadius.circular(5.0),
         boxShadow: [
           BoxShadow(
