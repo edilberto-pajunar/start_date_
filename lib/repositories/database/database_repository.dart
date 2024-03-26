@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:start_date/models/user_model.dart';
 import 'package:start_date/repositories/database/base_database_repository.dart';
 import 'package:start_date/repositories/storage/storage_repository.dart';
@@ -50,7 +51,7 @@ class DatabaseRepository extends BaseDatabaseRepository {
   Stream<List<User>> getUsers(User user) {
     return _firebaseFirestore
         .collection("users")
-        .where("gender", isNotEqualTo: "Female")
+        .where("gender", isNotEqualTo: _selectGender(user))
         // .where(FieldPath.documentId, whereNotIn: userFilter)
         .snapshots()
         .map((snap) {
@@ -87,16 +88,39 @@ class DatabaseRepository extends BaseDatabaseRepository {
   }
 
   @override
-  Stream<List<Match>> getMatches(User user) {
-    List<String> userFilter = List.from(user.matches!)..add("0");
-
-    return _firebaseFirestore
-        .collection("users")
-        .where(FieldPath.documentId, whereIn: userFilter)
-        .snapshots()
-        .map((snap) {
-      return snap.docs.map((doc) => Match.fromSnapshot(doc, user.id!)).toList();
+  Stream<List<User>> getUsersToSwipe(User user) {
+    return Rx.combineLatest2(getUser(user.id!), getUsers(user), (
+      User currentUser,
+      List<User> users,
+    ) {
+      return users.where((user) {
+        if (currentUser.swipeLeft!.contains(user.id)) {
+          return false;
+        } else if (currentUser.swipeRight!.contains(user.id)) {
+          return false;
+        } else if (currentUser.matches!.contains(user.id)) {
+          return false;
+        } else {
+          return true;
+        }
+      }).toList();
     });
+  }
 
+  @override
+  Stream<List<Match>> getMatches(User user) {
+    return Rx.combineLatest2(getUser(user.id!), getUsers(user), (
+      User currentUser,
+      List<User> users,
+    ) {
+      return users
+          .where((user) => currentUser.matches!.contains(user.id))
+          .map((user) => Match(userId: user.id!, matchedUser: user))
+          .toList();
+    });
+  }
+
+  _selectGender(User user) {
+    return (user.gender == "Female") ? "Female" : "Male";
   }
 }
