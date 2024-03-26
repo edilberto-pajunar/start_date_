@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:start_date/models/user_match_model.dart';
+import 'package:start_date/models/match_model.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({
     super.key,
-    required this.userMatch,
+    // required this.userMatch,
   });
 
-  final UserMatch userMatch;
+  // final Match userMatch;
 
   @override
   Widget build(BuildContext context) {
@@ -17,81 +17,81 @@ class ChatScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Column(
+        title: const Column(
           children: [
-            CircleAvatar(
-              radius: 15,
-              backgroundImage: NetworkImage(userMatch.matchedUser.imageUrls[0]),
-            ),
-            Text(userMatch.matchedUser.name),
+            // CircleAvatar(
+            //   radius: 15,
+            //   backgroundImage: NetworkImage(userMatch.matchedUser.imageUrls[0]),
+            // ),
+            // Text(userMatch.matchedUser.name),
           ],
         ),
       ),
       body: Column(
         children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: userMatch.chat != null
-                  ? ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: userMatch.chat![0].messages.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: userMatch.chat![0].messages[index].senderId ==
-                                  1
-                              ? Align(
-                                  alignment: Alignment.topRight,
-                                  child: Container(
-                                    padding: const EdgeInsets.all(8.0),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      color: Colors.black,
-                                    ),
-                                    child: Text(
-                                      userMatch
-                                          .chat![0].messages[index].message,
-                                      style:
-                                          theme.textTheme.bodyMedium!.copyWith(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              : Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Row(
-                                    children: [
-                                      CircleAvatar(
-                                        radius: 15,
-                                        backgroundImage: NetworkImage(
-                                            userMatch.matchedUser.imageUrls[0]),
-                                      ),
-                                      const SizedBox(width: 10.0),
-                                      Container(
-                                        padding: const EdgeInsets.all(8.0),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          color: Colors.grey,
-                                        ),
-                                        child: Text(
-                                          userMatch
-                                              .chat![0].messages[index].message,
-                                          style: theme.textTheme.bodyMedium!
-                                              .copyWith(
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                        );
-                      },
-                    )
-                  : const SizedBox(),
-            ),
-          ),
+          // Expanded(
+          //   child: SingleChildScrollView(
+          //     child: userMatch.chat != null
+          //         ? ListView.builder(
+          //             shrinkWrap: true,
+          //             itemCount: userMatch.chat![0].messages.length,
+          //             itemBuilder: (context, index) {
+          //               return ListTile(
+          //                 title: userMatch.chat![0].messages[index].senderId ==
+          //                         1
+          //                     ? Align(
+          //                         alignment: Alignment.topRight,
+          //                         child: Container(
+          //                           padding: const EdgeInsets.all(8.0),
+          //                           decoration: BoxDecoration(
+          //                             borderRadius: BorderRadius.circular(8.0),
+          //                             color: Colors.black,
+          //                           ),
+          //                           child: Text(
+          //                             userMatch
+          //                                 .chat![0].messages[index].message,
+          //                             style:
+          //                                 theme.textTheme.bodyMedium!.copyWith(
+          //                               color: Colors.white,
+          //                             ),
+          //                           ),
+          //                         ),
+          //                       )
+          //                     : Align(
+          //                         alignment: Alignment.topLeft,
+          //                         child: Row(
+          //                           children: [
+          //                             CircleAvatar(
+          //                               radius: 15,
+          //                               backgroundImage: NetworkImage(
+          //                                   userMatch.matchedUser.imageUrls[0]),
+          //                             ),
+          //                             const SizedBox(width: 10.0),
+          //                             Container(
+          //                               padding: const EdgeInsets.all(8.0),
+          //                               decoration: BoxDecoration(
+          //                                 borderRadius:
+          //                                     BorderRadius.circular(8.0),
+          //                                 color: Colors.grey,
+          //                               ),
+          //                               child: Text(
+          //                                 userMatch
+          //                                     .chat![0].messages[index].message,
+          //                                 style: theme.textTheme.bodyMedium!
+          //                                     .copyWith(
+          //                                   color: Colors.white,
+          //                                 ),
+          //                               ),
+          //                             ),
+          //                           ],
+          //                         ),
+          //                       ),
+          //               );
+          //             },
+          //           )
+          //         : const SizedBox(),
+          //   ),
+          // ),
           Container(
             padding: const EdgeInsets.all(20.0),
             child: Row(

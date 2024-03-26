@@ -47,8 +47,8 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
             ? [
                 IconButton(
                   onPressed: () {
-                    // Navigator.of(context).push(MaterialPageRoute(
-                    //     builder: (context) => ChatScreen(userMatch: )));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ChatScreen()));
                   },
                   icon: const Icon(Icons.message),
                 ),

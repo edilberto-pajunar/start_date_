@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:start_date/blocs/auth/auth_bloc.dart';
+import 'package:start_date/blocs/match/match_bloc.dart';
 import 'package:start_date/blocs/onboarding/onboarding_bloc.dart';
 import 'package:start_date/blocs/profile/profile_bloc.dart';
 import 'package:start_date/blocs/swipe/swipe_bloc.dart';
@@ -51,6 +52,11 @@ class MyApp extends StatelessWidget {
               databaseRepository: context.read<DatabaseRepository>(),
               storageRepository: context.read<StorageRepository>(),
             ),
+          ),
+          BlocProvider(
+            create: (context) => MatchBloc(
+              databaseRepository: context.read<DatabaseRepository>(),
+            )..add(LoadMatches(user: context.read<AuthBloc>().state.user!)),
           ),
           BlocProvider(
             create: (context) => ProfileBloc(

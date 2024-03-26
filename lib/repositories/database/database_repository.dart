@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:start_date/models/user_model.dart';
 import 'package:start_date/repositories/database/base_database_repository.dart';
 import 'package:start_date/repositories/storage/storage_repository.dart';
+import 'package:start_date/models/match_model.dart';
 
 class DatabaseRepository extends BaseDatabaseRepository {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
@@ -47,13 +48,9 @@ class DatabaseRepository extends BaseDatabaseRepository {
 
   @override
   Stream<List<User>> getUsers(User user) {
-    List<String> userFilter = List.from(user.swipeLeft!)
-      ..addAll(user.swipeRight!)
-      ..add(user.id!);
-
     return _firebaseFirestore
         .collection("users")
-        // .where("gender", isNotEqualTo: "Female")
+        .where("gender", isNotEqualTo: "Female")
         // .where(FieldPath.documentId, whereNotIn: userFilter)
         .snapshots()
         .map((snap) {
@@ -87,5 +84,19 @@ class DatabaseRepository extends BaseDatabaseRepository {
     await _firebaseFirestore.collection("users").doc(matchId).update({
       "matches": FieldValue.arrayUnion([userId])
     });
+  }
+
+  @override
+  Stream<List<Match>> getMatches(User user) {
+    List<String> userFilter = List.from(user.matches!)..add("0");
+
+    return _firebaseFirestore
+        .collection("users")
+        .where(FieldPath.documentId, whereIn: userFilter)
+        .snapshots()
+        .map((snap) {
+      return snap.docs.map((doc) => Match.fromSnapshot(doc, user.id!)).toList();
+    });
+
   }
 }
