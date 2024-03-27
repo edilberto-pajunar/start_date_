@@ -7,8 +7,8 @@ import 'package:start_date/widgets/custom_text_field.dart';
 import 'package:start_date/widgets/custom_text_header.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
-class Demo extends StatelessWidget {
-  const Demo({
+class DemoTab extends StatelessWidget {
+  const DemoTab({
     super.key,
     required this.tabController,
   });
@@ -35,6 +35,19 @@ class Demo extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    CustomTextHeader(
+                      tabController: tabController,
+                      text: "What's Your Name?",
+                    ),
+                    CustomTextField(
+                      text: "ENTER YOUR NAME",
+                      onChanged: (val) {
+                        context.read<OnboardingBloc>().add(
+                              UpdateUser(user: state.user.copyWith(name: val)),
+                            );
+                      },
+                    ),
+                    const SizedBox(height: 50.0),
                     CustomTextHeader(
                       tabController: tabController,
                       text: "What's Your Gender?",
@@ -70,7 +83,9 @@ class Demo extends StatelessWidget {
                       onChanged: (val) {
                         context.read<OnboardingBloc>().add(
                               UpdateUser(
-                                user: state.user.copyWith(age: int.parse(val),),
+                                user: state.user.copyWith(
+                                  age: int.parse(val),
+                                ),
                               ),
                             );
                       },

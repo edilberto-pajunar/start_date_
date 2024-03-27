@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:start_date/widgets/custom_button.dart';
 
-class Start extends StatelessWidget {
-  const Start({
+class StartTab extends StatelessWidget {
+  const StartTab({
     super.key,
     required this.tabController,
   });

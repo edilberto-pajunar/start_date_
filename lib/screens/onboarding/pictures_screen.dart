@@ -6,8 +6,8 @@ import 'package:start_date/widgets/custom_image_container.dart';
 import 'package:start_date/widgets/custom_text_header.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
-class Pictures extends StatelessWidget {
-  const Pictures({
+class PicturesTab extends StatelessWidget {
+  const PicturesTab({
     super.key,
     required this.tabController,
   });

@@ -11,8 +11,10 @@ import 'package:start_date/cubits/signup/signup_cubit.dart';
 import 'package:start_date/firebase_options.dart';
 import 'package:start_date/repositories/auth/auth_repository.dart';
 import 'package:start_date/repositories/database/database_repository.dart';
+import 'package:start_date/repositories/location/location_repository.dart';
 import 'package:start_date/repositories/storage/storage_repository.dart';
 import 'package:start_date/screens/login/login_screen.dart';
+import 'package:start_date/screens/splash/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,6 +35,7 @@ class MyApp extends StatelessWidget {
         RepositoryProvider(create: (context) => AuthRepository()),
         RepositoryProvider(create: (context) => DatabaseRepository()),
         RepositoryProvider(create: (context) => StorageRepository()),
+        RepositoryProvider(create: (context) => LocationRepository()),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -51,6 +54,7 @@ class MyApp extends StatelessWidget {
             create: (context) => OnboardingBloc(
               databaseRepository: context.read<DatabaseRepository>(),
               storageRepository: context.read<StorageRepository>(),
+              locationRepository: context.read<LocationRepository>(),
             ),
           ),
           BlocProvider(
@@ -79,7 +83,7 @@ class MyApp extends StatelessWidget {
         ],
         child: const MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: LoginScreen(),
+          home: SplashScreen(),
         ),
       ),
     );

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:start_date/blocs/profile/profile_bloc.dart';
-import 'package:start_date/models/user_model.dart';
 import 'package:start_date/repositories/auth/auth_repository.dart';
 import 'package:start_date/widgets/custom_appbar.dart';
 import 'package:start_date/widgets/custom_text_container.dart';
@@ -111,7 +110,7 @@ class ProfileScreen extends StatelessWidget {
                           icon: Icons.edit,
                         ),
                         Text(
-                          state.user.location,
+                          state.user.location!.name,
                           style: theme.textTheme.bodyMedium!.copyWith(
                             height: 1.5,
                           ),
@@ -120,9 +119,9 @@ class ProfileScreen extends StatelessWidget {
                           title: "Interest",
                           icon: Icons.edit,
                         ),
-                        Row(
+                        const Row(
                           children: [
-                            CustomTextContainer(text: state.user.interests[0]),
+                            // CustomTextContainer(text: state.user.interests[0]),
                           ],
                         ),
                         TextButton(

@@ -18,13 +18,13 @@ class LoginScreen extends StatelessWidget {
       ),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state.status == AuthStatus.unauthenticated) {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const LoginScreen()));
-          } else {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const HomeScreen()));
-          }
+          // if (state.status == AuthStatus.unauthenticated) {
+          //   Navigator.of(context).push(
+          //       MaterialPageRoute(builder: (context) => const LoginScreen()));
+          // } else {
+          //   Navigator.of(context).push(
+          //       MaterialPageRoute(builder: (context) => const HomeScreen()));
+          // }
         },
         child: Padding(
           padding: const EdgeInsets.all(20.0),

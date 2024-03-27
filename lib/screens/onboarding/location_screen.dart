@@ -1,14 +1,17 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:start_date/blocs/onboarding/onboarding_bloc.dart';
-import 'package:start_date/cubits/signup/signup_cubit.dart';
 import 'package:start_date/widgets/custom_button.dart';
 import 'package:start_date/widgets/custom_text_field.dart';
 import 'package:start_date/widgets/custom_text_header.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
+import 'package:start_date/models/location_model.dart';
 
-class Location extends StatelessWidget {
-  const Location({
+class LocationTab extends StatelessWidget {
+  const LocationTab({
     super.key,
     required this.tabController,
   });
@@ -17,6 +20,8 @@ class Location extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+
     return BlocBuilder<OnboardingBloc, OnboardingState>(
       builder: (context, state) {
         if (state is OnboardingLoading) {
@@ -40,13 +45,47 @@ class Location extends StatelessWidget {
                       text: "Where Are You",
                     ),
                     CustomTextField(
+                      onFocusChanged: (hasFocus) {
+                        if (hasFocus) {
+                          return;
+                        } else {
+                          context.read<OnboardingBloc>().add(UpdateUserLocation(
+                                isUpdateComplete: true,
+                                location: state.user.location,
+                              ));
+                        }
+                      },
                       text: "ENTER YOUR LOCATION",
                       onChanged: (val) {
-                        context.read<OnboardingBloc>().add(
-                              UpdateUser(
-                                  user: state.user.copyWith(location: val)),
-                            );
+                        Location location =
+                            state.user.location!.copyWith(name: val);
+
+                        context.read<OnboardingBloc>().add(UpdateUserLocation(
+                              location: location,
+                            ));
                       },
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      height: size.height * 0.5,
+                      child: GoogleMap(
+                        myLocationButtonEnabled: true,
+                        myLocationEnabled: false,
+                        onMapCreated: (GoogleMapController controller) {
+                          context.read<OnboardingBloc>().add(
+                                UpdateUserLocation(
+                                  controller: controller,
+                                ),
+                              );
+                        },
+                        initialCameraPosition: CameraPosition(
+                          zoom: 10,
+                          target: LatLng(
+                            state.user.location!.lat,
+                            state.user.location!.lon,
+                          ),
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 100),
                   ],

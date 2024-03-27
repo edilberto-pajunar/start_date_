@@ -6,8 +6,8 @@ import 'package:start_date/widgets/custom_text_field.dart';
 import 'package:start_date/widgets/custom_text_header.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
-class Email extends StatelessWidget {
-  const Email({
+class EmailTab extends StatelessWidget {
+  const EmailTab({
     super.key,
     required this.tabController,
   });

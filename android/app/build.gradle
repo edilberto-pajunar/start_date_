@@ -24,7 +24,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.example.start_date"
-    compileSdk flutter.compileSdkVersion
+    compileSdk 31
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -45,10 +45,11 @@ android {
         applicationId "com.example.start_date"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 20
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -67,4 +68,5 @@ flutter {
 dependencies {
     classpath 'com.android.tools.build:gradle:3.1.3'
     classpath 'com.google.gms:google-services:4.0.1'
+    implementation "androidx.multidex:multidex:2.0.1"
 }

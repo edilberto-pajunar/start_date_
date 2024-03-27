@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:start_date/blocs/onboarding/onboarding_bloc.dart';
 import 'package:start_date/cubits/signup/signup_cubit.dart';
+import 'package:start_date/models/location_model.dart';
 import 'package:start_date/models/user_model.dart';
 import 'package:start_date/screens/splash/splash_screen.dart';
 
@@ -50,7 +51,7 @@ class CustomButton extends StatelessWidget {
                 bio: "",
                 jobTitle: "",
                 interests: const [],
-                location: "",
+                location: Location.initialLocation,
                 swipeLeft: const [],
                 swipeRight: const [],
                 matches: const [],

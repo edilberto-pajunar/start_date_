@@ -8,8 +8,8 @@ import 'package:start_date/widgets/custom_text_field.dart';
 import 'package:start_date/widgets/custom_text_header.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
-class Bio extends StatelessWidget {
-  const Bio({
+class BioTab extends StatelessWidget {
+  const BioTab({
     super.key,
     required this.tabController,
   });
@@ -44,7 +44,8 @@ class Bio extends StatelessWidget {
                       text: "ENTER YOUR BIO",
                       onChanged: (val) {
                         context.read<OnboardingBloc>().add(
-                            UpdateUser(user: state.user.copyWith(bio: val)));
+                              UpdateUser(user: state.user.copyWith(bio: val)),
+                            );
                       },
                     ),
                     const SizedBox(height: 100.0),
