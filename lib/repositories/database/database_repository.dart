@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:start_date/models/user_model.dart';
 import 'package:start_date/repositories/database/base_database_repository.dart';
@@ -94,15 +95,24 @@ class DatabaseRepository extends BaseDatabaseRepository {
       List<User> users,
     ) {
       return users.where((user) {
-        if (currentUser.swipeLeft!.contains(user.id)) {
-          return false;
-        } else if (currentUser.swipeRight!.contains(user.id)) {
-          return false;
-        } else if (currentUser.matches!.contains(user.id)) {
-          return false;
-        } else {
-          return true;
-        }
+        bool isCurrentUser = user.id == currentUser.id;
+        bool wasSwipedLeft = currentUser.swipeLeft!.contains(user.id);
+        bool wasSwipedRight = currentUser.swipeRight!.contains(user.id);
+        bool isMatch = currentUser.matches!.contains(user.id);
+        bool isWithinAgeRange =
+            user.age >= currentUser.ageRangePreference![0] &&
+                user.age <= currentUser.ageRangePreference![1];
+        bool isWithinDistance =
+            _getDistance(currentUser, user) <= currentUser.distancePreference;
+
+        if (isCurrentUser) return false;
+        if (wasSwipedRight) return false;
+        if (wasSwipedLeft) return false;
+        if (isMatch) return false;
+        if (!isWithinDistance) return false;
+        if (!isWithinAgeRange) return false;
+
+        return true;
       }).toList();
     });
   }
@@ -120,7 +130,22 @@ class DatabaseRepository extends BaseDatabaseRepository {
     });
   }
 
+  _getDistance(User currentUser, User user) {
+    GeolocatorPlatform geolocator = GeolocatorPlatform.instance;
+    var distanceInKm = geolocator.distanceBetween(
+          currentUser.location!.lat.toDouble(),
+          currentUser.location!.lon.toDouble(),
+          user.location!.lat.toDouble(),
+          user.location!.lon.toDouble(),
+        ) ~/
+        1000;
+    return distanceInKm;
+  }
+
   _selectGender(User user) {
-    return (user.gender == "Female") ? "Female" : "Male";
+    if (user.genderPreference == null) {
+      return ["Male", "Female"];
+    }
+    return user.genderPreference;
   }
 }

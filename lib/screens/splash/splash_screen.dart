@@ -6,6 +6,7 @@ import 'package:start_date/blocs/auth/auth_bloc.dart';
 import 'package:start_date/screens/home/home_screen.dart';
 import 'package:start_date/screens/login/login_screen.dart';
 import 'package:start_date/screens/onboarding/onboarding_screen.dart';
+import 'package:start_date/screens/settings/settings_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -28,8 +29,8 @@ class SplashScreen extends StatelessWidget {
             });
           } else if (state.status == AuthStatus.authenticated) {
             Timer(const Duration(seconds: 3), () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const HomeScreen()));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const SettingsScreen()));
             });
           }
         },
