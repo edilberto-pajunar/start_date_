@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:start_date/blocs/onboarding/onboarding_bloc.dart';
+import 'package:start_date/blocs/profile/profile_bloc.dart';
 import 'package:start_date/widgets/custom_button.dart';
 import 'package:start_date/widgets/custom_text_field.dart';
 import 'package:start_date/widgets/custom_text_header.dart';
@@ -49,18 +50,18 @@ class LocationTab extends StatelessWidget {
                         if (hasFocus) {
                           return;
                         } else {
-                          context.read<OnboardingBloc>().add(UpdateUserLocation(
+                          context.read<OnboardingBloc>().add(SetUserLocation(
                                 isUpdateComplete: true,
                                 location: state.user.location,
                               ));
                         }
                       },
-                      text: "ENTER YOUR LOCATION",
+                      hint: "ENTER YOUR LOCATION",
                       onChanged: (val) {
                         Location location =
                             state.user.location!.copyWith(name: val);
 
-                        context.read<OnboardingBloc>().add(UpdateUserLocation(
+                        context.read<OnboardingBloc>().add(SetUserLocation(
                               location: location,
                             ));
                       },
@@ -72,17 +73,15 @@ class LocationTab extends StatelessWidget {
                         myLocationButtonEnabled: true,
                         myLocationEnabled: false,
                         onMapCreated: (GoogleMapController controller) {
-                          context.read<OnboardingBloc>().add(
-                                UpdateUserLocation(
-                                  controller: controller,
-                                ),
-                              );
+                          context
+                              .read<OnboardingBloc>()
+                              .add(SetUserLocation(controller: controller));
                         },
                         initialCameraPosition: CameraPosition(
                           zoom: 10,
                           target: LatLng(
-                            state.user.location!.lat,
-                            state.user.location!.lon,
+                            state.user.location!.lat.toDouble(),
+                            state.user.location!.lon.toDouble(),
                           ),
                         ),
                       ),

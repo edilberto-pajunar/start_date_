@@ -40,7 +40,7 @@ class DemoTab extends StatelessWidget {
                       text: "What's Your Name?",
                     ),
                     CustomTextField(
-                      text: "ENTER YOUR NAME",
+                      hint: "ENTER YOUR NAME",
                       onChanged: (val) {
                         context.read<OnboardingBloc>().add(
                               UpdateUser(user: state.user.copyWith(name: val)),
@@ -79,7 +79,7 @@ class DemoTab extends StatelessWidget {
                       text: "What's Your Age?",
                     ),
                     CustomTextField(
-                      text: "ENTER YOUR AGE",
+                      hint: "ENTER YOUR AGE",
                       onChanged: (val) {
                         context.read<OnboardingBloc>().add(
                               UpdateUser(

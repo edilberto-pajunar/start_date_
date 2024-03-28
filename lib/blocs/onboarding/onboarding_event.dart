@@ -52,12 +52,12 @@ class UpdateUserImages extends OnboardingEvent {
   List<Object?> get props => [user, image];
 }
 
-class UpdateUserLocation extends OnboardingEvent {
+class SetUserLocation extends OnboardingEvent {
   final Location? location;
   final GoogleMapController? controller;
   final bool isUpdateComplete;
 
-  const UpdateUserLocation({
+  const SetUserLocation({
     this.location,
     this.controller,
     this.isUpdateComplete = false,

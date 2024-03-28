@@ -6,6 +6,7 @@ class CustomElevatedButton extends StatelessWidget {
     required this.color,
     required this.textColor,
     this.onPressed,
+    this.width = 200,
     super.key,
   });
 
@@ -13,6 +14,7 @@ class CustomElevatedButton extends StatelessWidget {
   final Color color;
   final Color textColor;
   final Function()? onPressed;
+  final double width;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,7 @@ class CustomElevatedButton extends StatelessWidget {
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           elevation: 0,
-          fixedSize: const Size(200, 50),
+          fixedSize: Size(width, 50),
           shape: const RoundedRectangleBorder(),
           backgroundColor: color,
         ),

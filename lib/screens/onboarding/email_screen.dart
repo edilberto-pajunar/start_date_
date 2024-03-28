@@ -32,7 +32,7 @@ class EmailTab extends StatelessWidget {
                     text: "What's Your Email Address",
                   ),
                   CustomTextField(
-                    text: "ENTER YOUR EMAIL",
+                    hint: "ENTER YOUR EMAIL",
                     onChanged: (val) {
                       context.read<SignupCubit>().emailChanged(val);
                       print(state.email);
@@ -44,7 +44,7 @@ class EmailTab extends StatelessWidget {
                     text: "Choose a Password",
                   ),
                   CustomTextField(
-                    text: "ENTER YOUR PASSWORD",
+                    hint: "ENTER YOUR PASSWORD",
                     onChanged: (val) {
                       context.read<SignupCubit>().passwordChanged(val);
                       print(state.password);

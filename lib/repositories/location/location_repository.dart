@@ -23,11 +23,6 @@ class LocationRepository extends BaseLocationRepository {
     print(json);
     var results = json["candidates"][0] as Map<String, dynamic>;
 
-    return Location(
-      name: results["name"],
-      placeId: results["place_id"],
-      lat: results["geometry"]["location"]["lat"],
-      lon: results["geometry"]["location"]["lng"],
-    );
+    return Location.fromJson(results);
   }
 }

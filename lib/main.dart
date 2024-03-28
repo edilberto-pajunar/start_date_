@@ -66,6 +66,7 @@ class MyApp extends StatelessWidget {
             create: (context) => ProfileBloc(
               authBloc: context.read<AuthBloc>(),
               databaseRepository: context.read<DatabaseRepository>(),
+              locationRepository: context.read<LocationRepository>(),
             )..add(LoadProfile(
                 userId: context.read<AuthBloc>().state.authUser!.uid)),
           ),

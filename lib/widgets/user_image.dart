@@ -48,7 +48,7 @@ class UserImage extends StatelessWidget {
     return Container(
       margin: margin,
       height: height,
-      width: width,
+      width: width, 
       decoration: BoxDecoration(
         image: DecorationImage(
           fit: BoxFit.cover,

@@ -41,7 +41,7 @@ class BioTab extends StatelessWidget {
                       text: "Describe Yourself a Bit",
                     ),
                     CustomTextField(
-                      text: "ENTER YOUR BIO",
+                      hint: "ENTER YOUR BIO",
                       onChanged: (val) {
                         context.read<OnboardingBloc>().add(
                               UpdateUser(user: state.user.copyWith(bio: val)),

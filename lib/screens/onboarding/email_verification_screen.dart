@@ -30,7 +30,7 @@ class EmailVerificationTab extends StatelessWidget {
               ),
               CustomTextField(
                 controller: TextEditingController(),
-                text: "ENTER YOUR CODE",
+                hint: "ENTER YOUR CODE",
               ),
             ],
           ),
