@@ -8,10 +8,7 @@ import '../../widgets/custom_button.dart';
 class EmailVerificationTab extends StatelessWidget {
   const EmailVerificationTab({
     super.key,
-    required this.tabController,
   });
-
-  final TabController tabController;
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +21,7 @@ class EmailVerificationTab extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomTextHeader(
-                tabController: tabController,
+              const CustomTextHeader(
                 text: "Did You Get the Verification Code?",
               ),
               CustomTextField(
@@ -34,16 +30,15 @@ class EmailVerificationTab extends StatelessWidget {
               ),
             ],
           ),
-          Column(
+          const Column(
             children: [
-              const StepProgressIndicator(
+              StepProgressIndicator(
                 totalSteps: 6,
                 currentStep: 2,
                 selectedColor: Colors.black,
               ),
-              const SizedBox(height: 10.0),
+              SizedBox(height: 10.0),
               CustomButton(
-                tabController: tabController,
                 text: "Next",
               ),
             ],

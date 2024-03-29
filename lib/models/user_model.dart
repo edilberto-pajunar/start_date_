@@ -55,6 +55,24 @@ class User extends Equatable {
         distancePreference,
       ];
 
+  static const User empty = User(
+    id: "",
+    name: "",
+    age: 0,
+    gender: "",
+    imageUrls: [],
+    bio: "",
+    jobTitle: "",
+    interests: [],
+    location: Location.initialLocation,
+    swipeLeft: [],
+    swipeRight: [],
+    matches: [],
+    distancePreference: 10,
+    ageRangePreference: [18, 50],
+    genderPreference: ["Female"],
+  );
+
   static User fromSnapshot(DocumentSnapshot snap) {
     var data = snap.data() as Map<String, dynamic>?;
 
@@ -72,7 +90,9 @@ class User extends Equatable {
 
       userAgePreference = (data["ageRangePreference"] == null)
           ? [19, 40]
-          : (data["ageRangePreference"] as List).map((age) => age as int).toList();
+          : (data["ageRangePreference"] as List)
+              .map((age) => age as int)
+              .toList();
 
       userDistancePreference = (data["distancePreference"] == null)
           ? 30

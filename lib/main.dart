@@ -50,13 +50,7 @@ class MyApp extends StatelessWidget {
               authRepository: context.read<AuthRepository>(),
             ),
           ),
-          BlocProvider(
-            create: (context) => OnboardingBloc(
-              databaseRepository: context.read<DatabaseRepository>(),
-              storageRepository: context.read<StorageRepository>(),
-              locationRepository: context.read<LocationRepository>(),
-            ),
-          ),
+         
           BlocProvider(
             create: (context) => MatchBloc(
               databaseRepository: context.read<DatabaseRepository>(),
@@ -70,17 +64,8 @@ class MyApp extends StatelessWidget {
             )..add(LoadProfile(
                 userId: context.read<AuthBloc>().state.authUser!.uid)),
           ),
-          BlocProvider(
-            create: (context) => SignupCubit(
-              authRepository: context.read<AuthRepository>(),
-            ),
-          ),
-          BlocProvider(
-            create: (context) => SwipeBloc(
-              authBloc: context.read<AuthBloc>(),
-              databaseRepository: context.read<DatabaseRepository>(),
-            )..add(LoadUsers(user: context.read<AuthBloc>().state.user!)),
-          ),
+        
+        
         ],
         child: const MaterialApp(
           debugShowCheckedModeBanner: false,

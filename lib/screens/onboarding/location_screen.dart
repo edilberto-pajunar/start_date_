@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:start_date/blocs/onboarding/onboarding_bloc.dart';
 import 'package:start_date/blocs/profile/profile_bloc.dart';
+import 'package:start_date/screens/home/home_screen.dart';
+import 'package:start_date/screens/login/login_screen.dart';
 import 'package:start_date/widgets/custom_button.dart';
 import 'package:start_date/widgets/custom_text_field.dart';
 import 'package:start_date/widgets/custom_text_header.dart';
@@ -14,10 +16,7 @@ import 'package:start_date/models/location_model.dart';
 class LocationTab extends StatelessWidget {
   const LocationTab({
     super.key,
-    required this.tabController,
   });
-
-  final TabController tabController;
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +40,7 @@ class LocationTab extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomTextHeader(
-                      tabController: tabController,
+                    const CustomTextHeader(
                       text: "Where Are You",
                     ),
                     CustomTextField(
@@ -72,10 +70,9 @@ class LocationTab extends StatelessWidget {
                       child: GoogleMap(
                         myLocationButtonEnabled: true,
                         myLocationEnabled: false,
-                        onMapCreated: (GoogleMapController controller) {
-                          context
-                              .read<OnboardingBloc>()
-                              .add(SetUserLocation(controller: controller));
+                        onMapCreated: (GoogleMapController mapController) {
+                          context.read<OnboardingBloc>().add(
+                              SetUserLocation(mapController: mapController));
                         },
                         initialCameraPosition: CameraPosition(
                           zoom: 10,
@@ -98,8 +95,11 @@ class LocationTab extends StatelessWidget {
                     ),
                     const SizedBox(height: 10.0),
                     CustomButton(
-                      tabController: tabController,
-                      text: "Next",
+                      text: "DONE",
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const HomeScreen()));
+                      },
                     ),
                   ],
                 ),

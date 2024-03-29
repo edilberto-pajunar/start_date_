@@ -10,10 +10,7 @@ import 'package:step_progress_indicator/step_progress_indicator.dart';
 class DemoTab extends StatelessWidget {
   const DemoTab({
     super.key,
-    required this.tabController,
   });
-
-  final TabController tabController;
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +32,7 @@ class DemoTab extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomTextHeader(
-                      tabController: tabController,
+                    const CustomTextHeader(
                       text: "What's Your Name?",
                     ),
                     CustomTextField(
@@ -48,8 +44,7 @@ class DemoTab extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: 50.0),
-                    CustomTextHeader(
-                      tabController: tabController,
+                    const CustomTextHeader(
                       text: "What's Your Gender?",
                     ),
                     const SizedBox(height: 10.0),
@@ -74,8 +69,7 @@ class DemoTab extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: 100.0),
-                    CustomTextHeader(
-                      tabController: tabController,
+                    const CustomTextHeader(
                       text: "What's Your Age?",
                     ),
                     CustomTextField(
@@ -101,8 +95,12 @@ class DemoTab extends StatelessWidget {
                     ),
                     const SizedBox(height: 10.0),
                     CustomButton(
-                      tabController: tabController,
                       text: "Next",
+                      onPressed: () {
+                        context
+                            .read<OnboardingBloc>()
+                            .add(ContinueOnboarding(user: state.user));
+                      },
                     ),
                   ],
                 ),

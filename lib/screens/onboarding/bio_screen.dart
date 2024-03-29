@@ -11,10 +11,7 @@ import 'package:step_progress_indicator/step_progress_indicator.dart';
 class BioTab extends StatelessWidget {
   const BioTab({
     super.key,
-    required this.tabController,
   });
-
-  final TabController tabController;
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +33,7 @@ class BioTab extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomTextHeader(
-                      tabController: tabController,
+                    const CustomTextHeader(
                       text: "Describe Yourself a Bit",
                     ),
                     CustomTextField(
@@ -48,11 +44,22 @@ class BioTab extends StatelessWidget {
                             );
                       },
                     ),
-                    const SizedBox(height: 100.0),
-                    CustomTextHeader(
-                      tabController: tabController,
+                     const CustomTextHeader(
+                      text: "What do you do?",
+                    ),
+                    CustomTextField(
+                      hint: "ENTER YOUR JOB TITLE",
+                      onChanged: (val) {
+                        context.read<OnboardingBloc>().add(
+                              UpdateUser(user: state.user.copyWith(jobTitle: val)),
+                            );
+                      },
+                    ),
+                    const SizedBox(height: 50.0),
+                    const CustomTextHeader(
                       text: "What Do You Like?",
                     ),
+                    const SizedBox(height: 10.0),
                     const Row(
                       children: [
                         CustomTextContainer(text: "MUSIC"),
@@ -80,8 +87,12 @@ class BioTab extends StatelessWidget {
                     ),
                     const SizedBox(height: 10.0),
                     CustomButton(
-                      tabController: tabController,
                       text: "Next",
+                      onPressed: () {
+                        context
+                            .read<OnboardingBloc>()
+                            .add(ContinueOnboarding(user: state.user));
+                      },
                     ),
                   ],
                 ),

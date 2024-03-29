@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:start_date/blocs/onboarding/onboarding_bloc.dart';
+import 'package:start_date/cubits/signup/signup_cubit.dart';
+import 'package:start_date/repositories/auth/auth_repository.dart';
+import 'package:start_date/repositories/database/database_repository.dart';
+import 'package:start_date/repositories/location/location_repository.dart';
+import 'package:start_date/repositories/storage/storage_repository.dart';
 import 'package:start_date/screens/onboarding/bio_screen.dart';
 import 'package:start_date/screens/onboarding/demo_screen.dart';
 import 'package:start_date/screens/onboarding/email_screen.dart';
@@ -37,29 +44,50 @@ class OnboardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: tabs.length,
-      child: Builder(
-        builder: (context) {
-          final TabController tabController = DefaultTabController.of(context);
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => OnboardingBloc(
+            databaseRepository: context.read<DatabaseRepository>(),
+            storageRepository: context.read<StorageRepository>(),
+            locationRepository: context.read<LocationRepository>(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => SignupCubit(
+            authRepository: context.read<AuthRepository>(),
+          ),
+        ),
+      ],
+      child: DefaultTabController(
+        length: tabs.length,
+        child: Builder(
+          builder: (context) {
+            final TabController tabController =
+                DefaultTabController.of(context);
 
-          return Scaffold(
-            appBar: const CustomAppbar(
-              title: "Onboarding",
-            ),
-            body: TabBarView(
-              children: [
-                StartTab(tabController: tabController),
-                EmailTab(tabController: tabController),
-                EmailVerificationTab(tabController: tabController),
-                DemoTab(tabController: tabController),
-                PicturesTab(tabController: tabController),
-                BioTab(tabController: tabController),
-                LocationTab(tabController: tabController),
-              ],
-            ),
-          );
-        },
+            context
+                .read<OnboardingBloc>()
+                .add(StartOnboarding(tabController: tabController));
+
+            return const Scaffold(
+              appBar: CustomAppbar(
+                title: "Onboarding",
+              ),
+              body: TabBarView(
+                children: [
+                  StartTab(),
+                  EmailTab(),
+                  EmailVerificationTab(),
+                  DemoTab(),
+                  PicturesTab(),
+                  BioTab(),
+                  LocationTab(),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

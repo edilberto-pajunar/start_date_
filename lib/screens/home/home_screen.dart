@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:start_date/blocs/auth/auth_bloc.dart';
 import 'package:start_date/blocs/swipe/swipe_bloc.dart';
+import 'package:start_date/repositories/database/database_repository.dart';
 import 'package:start_date/screens/users/users_screen.dart';
 import 'package:start_date/widgets/choice_button.dart';
 import 'package:start_date/widgets/custom_appbar.dart';
@@ -16,38 +17,44 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    return BlocBuilder<SwipeBloc, SwipeState>(
-      builder: (context, state) {
-        if (state is SwipeLoading) {
-          return const Scaffold(
-            appBar: CustomAppbar(
-              title: "Start Date",
-              hasActions: true,
-            ),
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        } else if (state is SwipeLoaded) {
-          return SwipeLoadedHomeScreen(state: state);
-        }
-        if (state is SwipeMatched) {
-          return SwipeMatchedHomeScreen(state: state);
-        }
-        if (state is SwipeError) {
-          return const Scaffold(
-            appBar: CustomAppbar(
-              title: "Start Date",
-              hasActions: true,
-            ),
-            body: Center(
-              child: Text("There aren't any more users."),
-            ),
-          );
-        } else {
-          return const Text("Something went wrong.");
-        }
-      },
+    return BlocProvider(
+      create: (context) => SwipeBloc(
+        authBloc: context.read<AuthBloc>(),
+        databaseRepository: context.read<DatabaseRepository>(),
+      )..add(LoadUsers()),
+      child: BlocBuilder<SwipeBloc, SwipeState>(
+        builder: (context, state) {
+          if (state is SwipeLoading) {
+            return const Scaffold(
+              appBar: CustomAppbar(
+                title: "Start Date",
+                hasActions: true,
+              ),
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          } else if (state is SwipeLoaded) {
+            return SwipeLoadedHomeScreen(state: state);
+          }
+          if (state is SwipeMatched) {
+            return SwipeMatchedHomeScreen(state: state);
+          }
+          if (state is SwipeError) {
+            return const Scaffold(
+              appBar: CustomAppbar(
+                title: "Start Date",
+                hasActions: true,
+              ),
+              body: Center(
+                child: Text("There aren't any more users."),
+              ),
+            );
+          } else {
+            return const Text("Something went wrong.");
+          }
+        },
+      ),
     );
   }
 }
@@ -216,9 +223,7 @@ class SwipeMatchedHomeScreen extends StatelessWidget {
               color: Colors.black,
               textColor: Colors.white,
               onPressed: () {
-                context.read<SwipeBloc>().add(LoadUsers(
-                      user: context.read<AuthBloc>().state.user!,
-                    ));
+                context.read<SwipeBloc>().add(LoadUsers());
               },
             ),
           ],

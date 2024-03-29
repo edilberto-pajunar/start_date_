@@ -1,6 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:start_date/models/location_model.dart';
 import 'package:start_date/models/user_model.dart';
@@ -25,20 +28,41 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
         _locationRepository = locationRepository,
         super(OnboardingLoading()) {
     on<StartOnboarding>(_onStartOnboarding);
+    on<ContinueOnboarding>(_onContinueOnboarding);
     on<UpdateUser>(_onUpdateUser);
     on<UpdateUserImages>(_onUpdateUserImages);
     on<SetUserLocation>(_onSetUserLocation);
   }
 
   void _onStartOnboarding(StartOnboarding event, emit) async {
-    await _databaseRepository.createUser(event.user);
-    emit(OnboardingLoaded(user: event.user));
+    emit(OnboardingLoaded(
+      user: User.empty,
+      tabController: event.tabController,
+    ));
+  }
+
+  void _onContinueOnboarding(ContinueOnboarding event, emit) async {
+    final state = this.state as OnboardingLoaded;
+
+    if (event.isSignup) {
+      await _databaseRepository.createUser(event.user);
+    }
+
+    state.tabController.animateTo(state.tabController.index + 1);
+
+    emit(OnboardingLoaded(
+      user: event.user,
+      tabController: state.tabController,
+    ));
   }
 
   void _onUpdateUser(UpdateUser event, emit) {
     if (state is OnboardingLoaded) {
       _databaseRepository.updateUser(event.user);
-      emit(OnboardingLoaded(user: event.user));
+      emit(OnboardingLoaded(
+        user: event.user,
+        tabController: (state as OnboardingLoaded).tabController,
+      ));
     }
   }
 
@@ -62,7 +86,7 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
       final Location location =
           await _locationRepository.getLocation(event.location!.name);
 
-      state.controller!.animateCamera(
+      state.mapController!.animateCamera(
         CameraUpdate.newLatLng(
             LatLng(location.lat.toDouble(), location.lon.toDouble())),
       );
@@ -74,7 +98,8 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
       emit(
         OnboardingLoaded(
           user: state.user.copyWith(location: event.location),
-          controller: event.controller ?? state.controller,
+          mapController: event.mapController ?? state.mapController,
+          tabController: state.tabController,
         ),
       );
     }

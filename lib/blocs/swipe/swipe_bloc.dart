@@ -27,23 +27,27 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
 
     _authSubscription = _authBloc.stream.listen((state) {
       if (state.status == AuthStatus.authenticated) {
-        add(LoadUsers(user: state.user!));
+        add(LoadUsers());
       }
     });
   }
 
   void _onLoadUsers(LoadUsers event, emit) {
-    List<String> userFilter = List.from(event.user.swipeLeft!)
-      ..addAll(event.user.swipeRight!)
-      ..add(event.user.id!);
+    if (_authBloc.state.user != null) {
+      User currentUser = _authBloc.state.user!;
+      List<String> userFilter = List.from(currentUser.swipeLeft!)
+        ..addAll(currentUser.swipeRight!)
+        ..add(currentUser.id!);
 
-    _databaseRepository.getUsersToSwipe(event.user).listen((users) {
-      print("Loading Users: $users");
-      add(UpdateHome(
-        users:
-            users.where((element) => !userFilter.contains(element.id)).toList(),
-      ));
-    });
+      _databaseRepository.getUsersToSwipe(currentUser).listen((users) {
+        print("Loading Users: $users");
+        add(UpdateHome(
+          users: users
+              .where((element) => !userFilter.contains(element.id))
+              .toList(),
+        ));
+      });
+    }
   }
 
   void _onUpdateHome(UpdateHome event, emit) {

@@ -9,10 +9,7 @@ import 'package:step_progress_indicator/step_progress_indicator.dart';
 class PicturesTab extends StatelessWidget {
   const PicturesTab({
     super.key,
-    required this.tabController,
   });
-
-  final TabController tabController;
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +33,7 @@ class PicturesTab extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomTextHeader(
-                      tabController: tabController,
+                    const CustomTextHeader(
                       text: "Add 2 or More Pictures",
                     ),
                     const SizedBox(height: 10.0),
@@ -70,8 +66,12 @@ class PicturesTab extends StatelessWidget {
                     ),
                     const SizedBox(height: 10.0),
                     CustomButton(
-                      tabController: tabController,
                       text: "Next",
+                      onPressed: () {
+                        context
+                            .read<OnboardingBloc>()
+                            .add(ContinueOnboarding(user: state.user));
+                      },
                     ),
                   ],
                 ),

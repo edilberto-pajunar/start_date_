@@ -9,23 +9,28 @@ sealed class OnboardingEvent extends Equatable {
 
 class StartOnboarding extends OnboardingEvent {
   final User user;
+  final TabController tabController;
 
   const StartOnboarding({
-    this.user = const User(
-      id: "",
-      name: "",
-      age: 0,
-      gender: "",
-      imageUrls: [],
-      bio: "",
-      jobTitle: "",
-      interests: [],
-      location: Location.initialLocation,
-    ),
+    required this.tabController,
+    this.user = User.empty,
   });
 
   @override
-  List<Object?> get props => [user];
+  List<Object?> get props => [user, tabController];
+}
+
+class ContinueOnboarding extends OnboardingEvent {
+  final User user;
+  final bool isSignup;
+
+  const ContinueOnboarding({
+    required this.user,
+    this.isSignup = false,
+  });
+
+  @override
+  List<Object> get props => [user, isSignup];
 }
 
 class UpdateUser extends OnboardingEvent {
@@ -54,15 +59,15 @@ class UpdateUserImages extends OnboardingEvent {
 
 class SetUserLocation extends OnboardingEvent {
   final Location? location;
-  final GoogleMapController? controller;
+  final GoogleMapController? mapController;
   final bool isUpdateComplete;
 
   const SetUserLocation({
     this.location,
-    this.controller,
+    this.mapController,
     this.isUpdateComplete = false,
   });
 
   @override
-  List<Object?> get props => [location, controller, isUpdateComplete];
+  List<Object?> get props => [location, mapController, isUpdateComplete];
 }
