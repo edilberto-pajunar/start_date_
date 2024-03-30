@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:start_date/blocs/auth/auth_bloc.dart';
+import 'package:start_date/repositories/auth/auth_repository.dart';
 import 'package:start_date/screens/home/home_screen.dart';
 import 'package:start_date/screens/login/login_screen.dart';
 import 'package:start_date/screens/onboarding/onboarding_screen.dart';
+import 'package:start_date/widgets/custom_button.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -15,8 +17,13 @@ class SplashScreen extends StatelessWidget {
     return PopScope(
       canPop: false,
       child: BlocListener<AuthBloc, AuthState>(
-        listenWhen: (previous, current) =>
-            previous.authUser != current.authUser,
+        listenWhen: (previous, current) {
+          if (previous.authUser == null && current.authUser == null) {
+            return previous.authUser == current.authUser;
+          } else {
+            return previous.authUser != current.authUser;
+          }
+        },
         listener: (context, state) {
           print("Listener");
           print(state.status);
@@ -34,18 +41,22 @@ class SplashScreen extends StatelessWidget {
           }
         },
         child: Scaffold(
-          body: Container(
-            child: Center(
-              child: Column(
-                children: [
-                  Image.asset(
-                    "assets/images/start.png",
-                  ),
-                  const Text(
-                    "Start Date",
-                  ),
-                ],
-              ),
+          body: Center(
+            child: Column(
+              children: [
+                Image.asset(
+                  "assets/images/start.png",
+                ),
+                const Text(
+                  "Start Date",
+                ),
+                CustomButton(
+                  text: "Sign out",
+                  onPressed: () {
+                    context.read<AuthRepository>().signOut();
+                  },
+                )
+              ],
             ),
           ),
         ),
