@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -31,6 +32,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<SaveProfile>(_onSaveProfile);
     on<UpdateUserProfile>(_onUpdateUserProfile);
     on<UpdateUserLocation>(_onUpdateUserLocation);
+    on<GenerateCode>(_onGenerateCode);
 
     _authSubscription = _authBloc.stream.listen((state) {
       if (state.user != null) {
@@ -114,5 +116,23 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   Future<void> close() async {
     _authSubscription?.cancel();
     super.close();
+  }
+
+  void _onGenerateCode(GenerateCode event, emit) async {
+    const String chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    Random random = Random();
+    String code = '';
+
+    for (int i = 0; i < 4; i++) {
+      code += chars[random.nextInt(chars.length)];
+    }
+    final state = this.state as ProfileLoaded;
+
+    await _databaseRepository.updateCode(state.user, code);
+
+    emit(ProfileLoaded(
+      user: state.user,
+      generatedCode: code,
+    ));
   }
 }

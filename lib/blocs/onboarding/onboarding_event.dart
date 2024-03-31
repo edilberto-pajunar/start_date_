@@ -11,7 +11,7 @@ class StartOnboarding extends OnboardingEvent {
   final User user;
   final TabController tabController;
 
-  const StartOnboarding({
+   const StartOnboarding({
     required this.tabController,
     this.user = User.empty,
   });

@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:start_date/models/partner_model.dart';
 import 'package:start_date/models/user_model.dart';
 import 'package:start_date/repositories/database/base_database_repository.dart';
 import 'package:start_date/repositories/storage/storage_repository.dart';
@@ -147,5 +149,55 @@ class DatabaseRepository extends BaseDatabaseRepository {
       return ["Male", "Female"];
     }
     return user.genderPreference;
+  }
+
+  @override
+  Future<void> updateCode(User user, String generateCode) async {
+    print(user);
+    await _firebaseFirestore.collection("users").doc(user.id).update({
+      "partner": user.partner!
+          .copyWith(
+            generatedCode: generateCode,
+          )
+          .toMap(),
+    });
+  }
+
+  @override
+  Future<void> updateJoinPartner(User currentUser, String generatedCode) async {
+    _firebaseFirestore
+        .collection("users")
+        .snapshots()
+        .listen((QuerySnapshot snap) {
+      snap.docs.map((DocumentSnapshot doc) async {
+        User user = User.fromSnapshot(doc);
+        Partner partner =
+            Partner.fromJson((doc["partner"]) as Map<String, dynamic>);
+
+        if (generatedCode == partner.generatedCode && !partner.isTaken) {
+          await _firebaseFirestore
+              .collection("users")
+              .doc(currentUser.id!)
+              .update({
+            "partner": currentUser.partner!
+                .copyWith(
+                  partnerId: user.id,
+                  isTaken: true,
+                  generatedCode: user.partner!.generatedCode,
+                )
+                .toMap(),
+          });
+
+          await _firebaseFirestore.collection("users").doc(user.id!).update({
+            "partner": user.partner!
+                .copyWith(
+                  partnerId: currentUser.id,
+                  isTaken: true,
+                )
+                .toMap(),
+          });
+        }
+      }).toList();
+    });
   }
 }

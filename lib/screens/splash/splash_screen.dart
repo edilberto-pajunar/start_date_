@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:start_date/blocs/auth/auth_bloc.dart';
 import 'package:start_date/repositories/auth/auth_repository.dart';
 import 'package:start_date/screens/home/home_screen.dart';
+import 'package:start_date/screens/home/invitation_screen.dart';
 import 'package:start_date/screens/login/login_screen.dart';
-import 'package:start_date/screens/onboarding/onboarding_screen.dart';
 import 'package:start_date/widgets/custom_button.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -30,13 +30,18 @@ class SplashScreen extends StatelessWidget {
           if (state.status == AuthStatus.unauthenticated) {
             Timer(const Duration(seconds: 1), () {
               Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => const LoginScreen()),
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
                   (route) => false);
             });
           } else if (state.status == AuthStatus.authenticated) {
             Timer(const Duration(seconds: 3), () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const HomeScreen()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                if (!state.user!.partner!.isTaken) {
+                  return const InvitationScreen();
+                } else {
+                  return const HomeScreen();
+                }
+              }));
             });
           }
         },

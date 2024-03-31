@@ -35,7 +35,7 @@ class Location extends Equatable {
         placeId: json["place_id"],
         name: json["name"],
         lat: json["geometry"]["location"]["lat"],
-        lon: json["geometry"]["location"]["lon"],
+        lon: json["geometry"]["location"]["lng"],
       );
     } else {
       return Location(

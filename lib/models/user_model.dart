@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:start_date/models/location_model.dart';
+import 'package:start_date/models/partner_model.dart';
 
 class User extends Equatable {
   final String? id;
@@ -18,6 +19,7 @@ class User extends Equatable {
   final List<String>? genderPreference;
   final List<int>? ageRangePreference;
   final int? distancePreference;
+  final Partner? partner;
 
   const User({
     required this.id,
@@ -35,6 +37,7 @@ class User extends Equatable {
     this.genderPreference,
     this.ageRangePreference,
     this.distancePreference,
+    this.partner,
   });
 
   @override
@@ -53,6 +56,7 @@ class User extends Equatable {
         genderPreference,
         ageRangePreference,
         distancePreference,
+        partner,
       ];
 
   static const User empty = User(
@@ -71,6 +75,7 @@ class User extends Equatable {
     distancePreference: 10,
     ageRangePreference: [18, 50],
     genderPreference: ["Female"],
+    partner: Partner.empty,
   );
 
   static User fromSnapshot(DocumentSnapshot snap) {
@@ -114,6 +119,7 @@ class User extends Equatable {
       genderPreference: userGenderPreference,
       ageRangePreference: userAgePreference,
       distancePreference: userDistancePreference,
+      partner: Partner.fromJson(snap["partner"]),
     );
 
     return user;
@@ -135,6 +141,7 @@ class User extends Equatable {
       "genderPreference": genderPreference,
       "ageRangePreference": ageRangePreference,
       "distancePreference": distancePreference,
+      "partner": partner,
     };
   }
 
@@ -154,6 +161,7 @@ class User extends Equatable {
     List<String>? genderPreference,
     List<int>? ageRangePreference,
     int? distancePreference,
+    Partner? partner,
   }) {
     return User(
       id: id ?? this.id,
@@ -171,6 +179,7 @@ class User extends Equatable {
       genderPreference: genderPreference ?? this.genderPreference,
       ageRangePreference: ageRangePreference ?? this.ageRangePreference,
       distancePreference: distancePreference ?? this.distancePreference,
+      partner: partner ?? this.partner,
     );
   }
 

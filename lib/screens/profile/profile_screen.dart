@@ -24,6 +24,7 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       appBar: const CustomAppbar(
         title: "PROFILE",
+        automaticallyImplyLeading: true,
       ),
       extendBodyBehindAppBar: true,
       body: SingleChildScrollView(
@@ -389,12 +390,14 @@ class _Location extends StatelessWidget {
                       height: 1.5,
                     ),
                   ),
+            const SizedBox(height: 10.0),
             SizedBox(
               height: size.height * 0.5,
               child: GoogleMap(
                 myLocationButtonEnabled: true,
                 myLocationEnabled: false,
                 onMapCreated: (GoogleMapController controller) {
+                  print("This is the controller");
                   context
                       .read<ProfileBloc>()
                       .add(UpdateUserLocation(controller: controller));

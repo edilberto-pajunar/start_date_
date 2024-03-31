@@ -65,3 +65,5 @@ class UpdateUserLocation extends ProfileEvent {
   @override
   List<Object?> get props => [location, controller, isUpdateComplete];
 }
+
+class GenerateCode extends ProfileEvent {}

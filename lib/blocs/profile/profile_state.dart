@@ -13,13 +13,15 @@ class ProfileLoaded extends ProfileState {
   final User user;
   final bool isEditingOn;
   final GoogleMapController? controller;
+  final String? generatedCode;
 
   const ProfileLoaded({
     required this.user,
     this.isEditingOn = false,
     this.controller,
+    this.generatedCode,
   });
 
   @override
-  List<Object?> get props => [user, isEditingOn, controller];
+  List<Object?> get props => [user, isEditingOn, controller, generatedCode];
 }
