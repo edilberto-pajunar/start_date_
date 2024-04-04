@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:start_date/blocs/auth/auth_bloc.dart';
 import 'package:start_date/blocs/match/match_bloc.dart';
 import 'package:start_date/blocs/profile/profile_bloc.dart';
-import 'package:start_date/cubits/cubit/invitation_cubit.dart';
+import 'package:start_date/cubits/invitation/invitation_cubit.dart';
 import 'package:start_date/cubits/login/login_cubit.dart';
 import 'package:start_date/firebase_options.dart';
 import 'package:start_date/repositories/auth/auth_repository.dart';

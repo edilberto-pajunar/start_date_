@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:start_date/blocs/profile/profile_bloc.dart';
-import 'package:start_date/cubits/cubit/invitation_cubit.dart';
+import 'package:start_date/cubits/invitation/invitation_cubit.dart';
 import 'package:start_date/widgets/custom_elevated_button.dart';
 import 'package:start_date/widgets/custom_text_field.dart';
 

@@ -21,23 +21,31 @@ class UpdateHome extends SwipeEvent {
 }
 
 class SwipeLeft extends SwipeEvent {
+  final User currentUser;
   final User user;
+  final User userPartner;
 
   const SwipeLeft({
+    required this.currentUser,
     required this.user,
+    required this.userPartner,
   });
 
   @override
-  List<Object?> get props => [user];
+  List<Object?> get props => [currentUser, user, userPartner];
 }
 
 class SwipeRight extends SwipeEvent {
+  final User currentUser;
   final User user;
+  final User userPartner;
 
   const SwipeRight({
+    required this.currentUser,
     required this.user,
+    required this.userPartner,
   });
 
   @override
-  List<Object?> get props => [user];
+  List<Object?> get props => [currentUser, user, userPartner];
 }

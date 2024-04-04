@@ -24,17 +24,17 @@ class LoginScreen extends StatelessWidget {
           listenWhen: (current, previous) =>
               previous.authUser != current.authUser,
           listener: (context, state) {
-            if (state.status == AuthStatus.authenticated) {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const HomeScreen()));
-            }
-            // if (state.status == AuthStatus.unauthenticated) {
-            //   Navigator.of(context).push(
-            //       MaterialPageRoute(builder: (context) => const LoginScreen()));
-            // } else {
+            // if (state.status == AuthStatus.authenticated) {
             //   Navigator.of(context).push(
             //       MaterialPageRoute(builder: (context) => const HomeScreen()));
             // }
+            if (state.status == AuthStatus.unauthenticated) {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => LoginScreen()));
+            } else {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const HomeScreen()));
+            }
           },
           child: Padding(
             padding: const EdgeInsets.all(20.0),
@@ -61,7 +61,7 @@ class LoginScreen extends StatelessWidget {
                   color: Colors.white,
                   textColor: Colors.black,
                   onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) => const OnboardingScreen()));
                   },
                 ),

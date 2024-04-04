@@ -11,11 +11,11 @@ abstract class BaseDatabaseRepository {
   Future<void> updateUser(User user);
   Future<void> updateUserPictures(User user, String imageName);
   Future<void> updateUserSwipe(
-    String userId,
-    String matchId,
+    User currentUser,
+    User user,
     bool isSwipeRight,
   );
-  Future<void> updateUserMatch(String userId, String matchId);
+  Future<void> updateUserMatch(User currentUser, User user);
 
   Future<void> updateCode(User user, String generateCode);
   Future<void> updateJoinPartner(User currentUser, String generatedCode);

@@ -4,14 +4,15 @@ import 'package:start_date/models/match_model.dart';
 class ChatScreen extends StatelessWidget {
   const ChatScreen({
     super.key,
-    // required this.userMatch,
+    required this.match,
   });
 
-  // final Match userMatch;
+  final Match match;
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    var messageCount = (match.chat == null) ? 0 : match.chat.messages.length;
 
     return Scaffold(
       appBar: AppBar(
@@ -21,7 +22,7 @@ class ChatScreen extends StatelessWidget {
           children: [
             // CircleAvatar(
             //   radius: 15,
-            //   backgroundImage: NetworkImage(userMatch.matchedUser.imageUrls[0]),
+            //   backgroundImage: NetworkImage(match.matchedUser.imageUrls[0]),
             // ),
             // Text(userMatch.matchedUser.name),
           ],
@@ -29,16 +30,22 @@ class ChatScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
+          CircleAvatar(
+            radius: 15.0,
+            backgroundImage: NetworkImage(match.matchUser.imageUrls[0]),
+          ),
+          Text(
+            match.matchUser.name,
+          ),
           // Expanded(
           //   child: SingleChildScrollView(
-          //     child: userMatch.chat != null
+          //     child: match.chat != null
           //         ? ListView.builder(
           //             shrinkWrap: true,
-          //             itemCount: userMatch.chat![0].messages.length,
+          //             itemCount: match.chat[0].messages.length,
           //             itemBuilder: (context, index) {
           //               return ListTile(
-          //                 title: userMatch.chat![0].messages[index].senderId ==
-          //                         1
+          //                 title: match.chat[0].messages[index].senderId == 1
           //                     ? Align(
           //                         alignment: Alignment.topRight,
           //                         child: Container(
@@ -48,8 +55,7 @@ class ChatScreen extends StatelessWidget {
           //                             color: Colors.black,
           //                           ),
           //                           child: Text(
-          //                             userMatch
-          //                                 .chat![0].messages[index].message,
+          //                             match.chat[0].messages[index].message,
           //                             style:
           //                                 theme.textTheme.bodyMedium!.copyWith(
           //                               color: Colors.white,
@@ -64,7 +70,7 @@ class ChatScreen extends StatelessWidget {
           //                             CircleAvatar(
           //                               radius: 15,
           //                               backgroundImage: NetworkImage(
-          //                                   userMatch.matchedUser.imageUrls[0]),
+          //                                   match.matchedUser.imageUrls[0]),
           //                             ),
           //                             const SizedBox(width: 10.0),
           //                             Container(
@@ -75,8 +81,7 @@ class ChatScreen extends StatelessWidget {
           //                                 color: Colors.grey,
           //                               ),
           //                               child: Text(
-          //                                 userMatch
-          //                                     .chat![0].messages[index].message,
+          //                                 match.chat[0].messages[index].message,
           //                                 style: theme.textTheme.bodyMedium!
           //                                     .copyWith(
           //                                   color: Colors.white,

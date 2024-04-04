@@ -25,23 +25,28 @@ class SplashScreen extends StatelessWidget {
           }
         },
         listener: (context, state) {
-          print("Listener");
           print(state.status);
           if (state.status == AuthStatus.unauthenticated) {
             Timer(const Duration(seconds: 1), () {
               Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          BlocProvider.of<AuthBloc>(context).state.status ==
+                                  AuthStatus.unauthenticated
+                              ? LoginScreen()
+                              : const HomeScreen()),
                   (route) => false);
             });
           } else if (state.status == AuthStatus.authenticated) {
             Timer(const Duration(seconds: 3), () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) {
                 if (!state.user!.partner!.isTaken) {
                   return const InvitationScreen();
                 } else {
                   return const HomeScreen();
                 }
-              }));
+              }), (route) => false);
             });
           }
         },

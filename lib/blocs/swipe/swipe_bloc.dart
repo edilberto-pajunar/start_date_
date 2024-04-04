@@ -37,13 +37,15 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
       User currentUser = _authBloc.state.user!;
       List<String> userFilter = List.from(currentUser.swipeLeft!)
         ..addAll(currentUser.swipeRight!)
-        ..add(currentUser.id!);
+        ..add(currentUser.id!)
+        ..add(currentUser.partner!.partnerId);
 
       _databaseRepository.getUsersToSwipe(currentUser).listen((users) {
         print("Loading Users: $users");
         add(UpdateHome(
           users: users
               .where((element) => !userFilter.contains(element.id))
+              .where((element) => element.partner!.isTaken)
               .toList(),
         ));
       });
@@ -62,17 +64,19 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
     if (state is SwipeLoaded) {
       final state = this.state as SwipeLoaded;
 
-      final String userId = _authBloc.state.authUser!.uid;
-      List<User> users = List.from(state.users)..remove(event.user);
+      final User user = _authBloc.state.user!;
+      List<User> users = List.from(state.users)
+        ..remove(event.user)
+        ..remove(event.userPartner);
 
       await _databaseRepository.updateUserSwipe(
-        userId,
-        event.user.id!,
+        event.currentUser,
+        event.user,
         true,
       );
 
-      if (!event.user.swipeRight!.contains(userId)) {
-        await _databaseRepository.updateUserMatch(userId, event.user.id!);
+      if (!event.user.swipeRight!.contains(user.id)) {
+        await _databaseRepository.updateUserMatch(user, event.user);
         emit(SwipeMatched(user: event.user));
       } else if (users.isNotEmpty) {
         emit(SwipeLoaded(users: users));
@@ -86,11 +90,13 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
     if (state is SwipeLoaded) {
       final state = this.state as SwipeLoaded;
 
-      List<User> users = List.from(state.users)..remove(event.user);
+      List<User> users = List.from(state.users)
+        ..remove(event.user)
+        ..remove(event.userPartner);
 
       _databaseRepository.updateUserSwipe(
-        _authBloc.state.authUser!.uid,
-        event.user.id!,
+        event.currentUser,
+        event.user,
         false,
       );
 

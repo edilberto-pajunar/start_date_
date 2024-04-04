@@ -141,7 +141,7 @@ class User extends Equatable {
       "genderPreference": genderPreference,
       "ageRangePreference": ageRangePreference,
       "distancePreference": distancePreference,
-      "partner": partner,
+      "partner": partner!.toMap(),
     };
   }
 

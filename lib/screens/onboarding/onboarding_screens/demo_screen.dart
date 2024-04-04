@@ -16,12 +16,21 @@ class DemoTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController name = TextEditingController();
+    final TextEditingController age = TextEditingController();
+
     return OnboardingScreenLayout(
       currentStep: 3,
       onPressed: () {
         context
             .read<OnboardingBloc>()
             .add(ContinueOnboarding(user: state.user));
+
+        context.read<OnboardingBloc>().add(UpdateUser(
+                user: state.user.copyWith(
+              name: name.text,
+              age: int.parse(age.text),
+            )));
       },
       children: [
         const CustomTextHeader(
@@ -29,11 +38,7 @@ class DemoTab extends StatelessWidget {
         ),
         CustomTextField(
           hint: "ENTER YOUR NAME",
-          onChanged: (val) {
-            context.read<OnboardingBloc>().add(
-                  UpdateUser(user: state.user.copyWith(name: val)),
-                );
-          },
+          controller: name,
         ),
         const SizedBox(height: 50.0),
         const CustomTextHeader(
@@ -64,15 +69,7 @@ class DemoTab extends StatelessWidget {
         ),
         CustomTextField(
           hint: "ENTER YOUR AGE",
-          onChanged: (val) {
-            context.read<OnboardingBloc>().add(
-                  UpdateUser(
-                    user: state.user.copyWith(
-                      age: int.parse(val),
-                    ),
-                  ),
-                );
-          },
+          controller: age,
         ),
       ],
     );

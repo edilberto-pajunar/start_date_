@@ -54,7 +54,7 @@ class DatabaseRepository extends BaseDatabaseRepository {
   Stream<List<User>> getUsers(User user) {
     return _firebaseFirestore
         .collection("users")
-        .where("gender", isNotEqualTo: _selectGender(user))
+        // .where("gender", isNotEqualTo: _selectGender(user))
         // .where(FieldPath.documentId, whereNotIn: userFilter)
         .snapshots()
         .map((snap) {
@@ -64,29 +64,59 @@ class DatabaseRepository extends BaseDatabaseRepository {
 
   @override
   Future<void> updateUserSwipe(
-    String userId,
-    String matchId,
+    User currentUser,
+    User user,
     bool isSwipeRight,
   ) async {
     if (isSwipeRight) {
-      await _firebaseFirestore.collection("users").doc(userId).update({
-        "swipeRight": FieldValue.arrayUnion([matchId])
+      await _firebaseFirestore.collection("users").doc(currentUser.id).update({
+        "swipeRight": FieldValue.arrayUnion([user.id, user.partner!.partnerId])
+      });
+
+      await _firebaseFirestore
+          .collection("users")
+          .doc(currentUser.partner!.partnerId)
+          .update({
+        "swipeRight": FieldValue.arrayUnion([user.id, user.partner!.partnerId])
       });
     } else {
-      await _firebaseFirestore.collection("users").doc(userId).update({
-        "swipeLeft": FieldValue.arrayUnion([matchId])
+      await _firebaseFirestore.collection("users").doc(currentUser.id).update({
+        "swipeLeft": FieldValue.arrayUnion([user.id, user.partner!.partnerId])
+      });
+
+      await _firebaseFirestore
+          .collection("users")
+          .doc(currentUser.partner!.partnerId)
+          .update({
+        "swipeLeft": FieldValue.arrayUnion([user.id, user.partner!.partnerId])
       });
     }
   }
 
   @override
-  Future<void> updateUserMatch(String userId, String matchId) async {
-    await _firebaseFirestore.collection("users").doc(userId).update({
-      "matches": FieldValue.arrayUnion([matchId])
+  Future<void> updateUserMatch(User currentUser, User user) async {
+    await _firebaseFirestore.collection("users").doc(currentUser.id).update({
+      "matches": FieldValue.arrayUnion([user.id, user.partner!.partnerId])
     });
 
-    await _firebaseFirestore.collection("users").doc(matchId).update({
-      "matches": FieldValue.arrayUnion([userId])
+    await _firebaseFirestore
+        .collection("users")
+        .doc(currentUser.partner!.partnerId)
+        .update({
+      "matches": FieldValue.arrayUnion([user.id, user.partner!.partnerId])
+    });
+
+    await _firebaseFirestore.collection("users").doc(user.id).update({
+      "matches": FieldValue.arrayUnion(
+          [currentUser.id, currentUser.partner!.partnerId])
+    });
+
+    await _firebaseFirestore
+        .collection("users")
+        .doc(user.partner!.partnerId)
+        .update({
+      "matches": FieldValue.arrayUnion(
+          [currentUser.id, currentUser.partner!.partnerId])
     });
   }
 
@@ -111,8 +141,8 @@ class DatabaseRepository extends BaseDatabaseRepository {
         if (wasSwipedRight) return false;
         if (wasSwipedLeft) return false;
         if (isMatch) return false;
-        if (!isWithinDistance) return false;
-        if (!isWithinAgeRange) return false;
+        // if (!isWithinDistance) return false;
+        // if (!isWithinAgeRange) return false;
 
         return true;
       }).toList();
@@ -173,6 +203,7 @@ class DatabaseRepository extends BaseDatabaseRepository {
         User user = User.fromSnapshot(doc);
         Partner partner =
             Partner.fromJson((doc["partner"]) as Map<String, dynamic>);
+
 
         if (generatedCode == partner.generatedCode && !partner.isTaken) {
           await _firebaseFirestore

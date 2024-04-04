@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:start_date/blocs/auth/auth_bloc.dart';
 import 'package:start_date/blocs/swipe/swipe_bloc.dart';
+import 'package:start_date/models/user_model.dart';
 import 'package:start_date/repositories/database/database_repository.dart';
 import 'package:start_date/screens/users/users_screen.dart';
 import 'package:start_date/widgets/choice_button.dart';
@@ -70,6 +71,13 @@ class SwipeLoadedHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var userCount = state.users.length;
+    final user = state.users[0];
+
+    final List<User> userPartner = state.users.where((element) {
+      return element.partner!.partnerId == user.id;
+    }).toList();
+
+    var userPartnerCount = userPartner.length;
 
     final ThemeData theme = Theme.of(context);
     return Scaffold(
@@ -86,25 +94,66 @@ class SwipeLoadedHomeScreen extends StatelessWidget {
                         user: state.users[0],
                       )));
             },
-            child: Draggable(
-              feedback: UserCard(user: state.users[0]),
-              childWhenDragging: (userCount > 1)
-                  ? UserCard(user: state.users[1])
-                  : Container(),
-              child: UserCard(user: state.users[0]),
-              onDragEnd: (drag) {
-                if (drag.velocity.pixelsPerSecond.dx < -100) {
-                  context
-                      .read<SwipeBloc>()
-                      .add(SwipeLeft(user: state.users[0]));
-                  print("Swiped Left");
-                } else if (drag.offset.dx > 100) {
-                  context
-                      .read<SwipeBloc>()
-                      .add(SwipeRight(user: state.users[0]));
-                  print("Swiped right");
-                }
-              },
+            child: Column(
+              children: [
+                Draggable(
+                  feedback: Column(
+                    children: [
+                      UserCard(
+                        user: state.users[0],
+                        heroTag: "partner1",
+                      ),
+                      UserCard(
+                        user: userPartner[0],
+                        heroTag: "partner2",
+                      ),
+                    ],
+                  ),
+                  childWhenDragging: (userCount > 1)
+                      ? Column(
+                          children: [
+                            UserCard(
+                              user: state.users[1],
+                              heroTag: "partner1",
+                            ),
+                            UserCard(
+                              user: userPartner[0],
+                              heroTag: "partner2",
+                            ),
+                          ],
+                        )
+                      : Container(),
+                  child: Column(
+                    children: [
+                      UserCard(
+                        user: state.users[0],
+                        heroTag: "partner1",
+                      ),
+                      UserCard(
+                        user: userPartner[0],
+                        heroTag: "partner2",
+                      ),
+                    ],
+                  ),
+                  onDragEnd: (drag) {
+                    if (drag.velocity.pixelsPerSecond.dx < -100) {
+                      context.read<SwipeBloc>().add(SwipeLeft(
+                            currentUser: context.read<AuthBloc>().state.user!,
+                            user: state.users[0],
+                            userPartner: userPartner[0],
+                          ));
+                      print("Swiped Left");
+                    } else if (drag.offset.dx > 100) {
+                      context.read<SwipeBloc>().add(SwipeRight(
+                            currentUser: context.read<AuthBloc>().state.user!,
+                            user: state.users[0],
+                            userPartner: userPartner[0],
+                          ));
+                      print("Swiped right");
+                    }
+                  },
+                ),
+              ],
             ),
           ),
           Padding(
@@ -119,9 +168,11 @@ class SwipeLoadedHomeScreen extends StatelessWidget {
                   color: theme.colorScheme.primary,
                   icon: Icons.clear_rounded,
                   onTap: () {
-                    context
-                        .read<SwipeBloc>()
-                        .add(SwipeLeft(user: state.users[0]));
+                    context.read<SwipeBloc>().add(SwipeLeft(
+                          currentUser: context.read<AuthBloc>().state.user!,
+                          user: state.users[0],
+                          userPartner: userPartner[0],
+                        ));
                   },
                 ),
                 ChoiceButton(
@@ -131,9 +182,13 @@ class SwipeLoadedHomeScreen extends StatelessWidget {
                   size: 30,
                   icon: Icons.favorite,
                   onTap: () {
-                    context
-                        .read<SwipeBloc>()
-                        .add(SwipeLeft(user: state.users[0]));
+                    context.read<SwipeBloc>().add(
+                          SwipeRight(
+                            currentUser: context.read<AuthBloc>().state.user!,
+                            user: state.users[0],
+                            userPartner: userPartner[0],
+                          ),
+                        );
                   },
                 ),
                 ChoiceButton(

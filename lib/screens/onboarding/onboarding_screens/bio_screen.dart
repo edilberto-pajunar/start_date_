@@ -17,12 +17,21 @@ class BioTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController bio = TextEditingController();
+    final TextEditingController jobTitle = TextEditingController();
+
     return OnboardingScreenLayout(
       currentStep: 5,
       onPressed: () {
         context
             .read<OnboardingBloc>()
             .add(ContinueOnboarding(user: state.user));
+
+        context.read<OnboardingBloc>().add(UpdateUser(
+                user: state.user.copyWith(
+              bio: bio.text,
+              jobTitle: jobTitle.text,
+            )));
       },
       children: [
         const CustomTextHeader(
@@ -30,22 +39,14 @@ class BioTab extends StatelessWidget {
         ),
         CustomTextField(
           hint: "ENTER YOUR BIO",
-          onChanged: (val) {
-            context.read<OnboardingBloc>().add(
-                  UpdateUser(user: state.user.copyWith(bio: val)),
-                );
-          },
+          controller: bio,
         ),
         const CustomTextHeader(
           text: "What do you do?",
         ),
         CustomTextField(
           hint: "ENTER YOUR JOB TITLE",
-          onChanged: (val) {
-            context.read<OnboardingBloc>().add(
-                  UpdateUser(user: state.user.copyWith(jobTitle: val)),
-                );
-          },
+          controller: jobTitle,
         ),
         const SizedBox(height: 50.0),
         const CustomTextHeader(

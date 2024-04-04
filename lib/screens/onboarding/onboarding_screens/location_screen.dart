@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:start_date/blocs/auth/auth_bloc.dart';
 import 'package:start_date/blocs/onboarding/onboarding_bloc.dart';
 import 'package:start_date/screens/home/home_screen.dart';
 import 'package:start_date/screens/onboarding/onboarding_screen.dart';
@@ -22,8 +23,10 @@ class LocationTab extends StatelessWidget {
     return OnboardingScreenLayout(
       currentStep: 6,
       onPressed: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => const HomeScreen()));
+        // Navigator.of(context)
+        //     .push(MaterialPageRoute(builder: (context) => const HomeScreen()));
+        context.read<AuthBloc>().add(AuthUserChanged(
+            authUser: context.read<AuthBloc>().state.authUser!));
       },
       children: [
         const CustomTextHeader(

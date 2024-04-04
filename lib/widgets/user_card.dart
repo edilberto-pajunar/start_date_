@@ -5,10 +5,12 @@ import 'package:start_date/widgets/user_image.dart';
 class UserCard extends StatelessWidget {
   const UserCard({
     required this.user,
+    required this.heroTag,
     super.key,
   });
 
   final User user;
+  final String heroTag;
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +18,11 @@ class UserCard extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return Hero(
-      tag: "user_image",
+      tag: heroTag,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: SizedBox(
-          height: size.height * 0.6,
+          height: size.height * 0.3,
           width: size.width,
           child: Stack(
             children: [

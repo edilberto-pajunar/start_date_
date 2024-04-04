@@ -25,7 +25,8 @@ class CustomTextField extends StatelessWidget {
       child: Focus(
         onFocusChange: onFocusChanged ?? (hasFocus) {},
         child: TextFormField(
-          initialValue: initialValue,
+          controller: controller,
+          initialValue: controller != null ? null : initialValue,
           decoration: InputDecoration(
             filled: true,
             fillColor: Colors.white,
