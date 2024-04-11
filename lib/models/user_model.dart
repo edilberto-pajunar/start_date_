@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:start_date/models/location_model.dart';
 import 'package:start_date/models/partner_model.dart';
+import 'package:start_date/models/quality_model.dart';
 
 class User extends Equatable {
   final String? id;
@@ -20,6 +21,7 @@ class User extends Equatable {
   final List<int>? ageRangePreference;
   final int? distancePreference;
   final Partner? partner;
+  final Quality? quality;
 
   const User({
     required this.id,
@@ -38,6 +40,7 @@ class User extends Equatable {
     this.ageRangePreference,
     this.distancePreference,
     this.partner,
+    this.quality,
   });
 
   @override
@@ -57,6 +60,7 @@ class User extends Equatable {
         ageRangePreference,
         distancePreference,
         partner,
+        quality,
       ];
 
   static const User empty = User(
@@ -76,6 +80,7 @@ class User extends Equatable {
     ageRangePreference: [18, 50],
     genderPreference: ["Female"],
     partner: Partner.empty,
+    quality: Quality.empty,
   );
 
   static User fromSnapshot(DocumentSnapshot snap) {
@@ -120,6 +125,7 @@ class User extends Equatable {
       ageRangePreference: userAgePreference,
       distancePreference: userDistancePreference,
       partner: Partner.fromJson(snap["partner"]),
+      quality: Quality.fromJson(snap["quality"]),
     );
 
     return user;
@@ -127,6 +133,7 @@ class User extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {
+      "id": id,
       "name": name,
       "age": age,
       "gender": gender,
@@ -142,6 +149,7 @@ class User extends Equatable {
       "ageRangePreference": ageRangePreference,
       "distancePreference": distancePreference,
       "partner": partner!.toMap(),
+      "quality": quality!.toJson(),
     };
   }
 
@@ -162,6 +170,7 @@ class User extends Equatable {
     List<int>? ageRangePreference,
     int? distancePreference,
     Partner? partner,
+    Quality? quality,
   }) {
     return User(
       id: id ?? this.id,
@@ -180,69 +189,7 @@ class User extends Equatable {
       ageRangePreference: ageRangePreference ?? this.ageRangePreference,
       distancePreference: distancePreference ?? this.distancePreference,
       partner: partner ?? this.partner,
+      quality: quality ?? this.quality,
     );
   }
-
-  static List<User> users = [
-    const User(
-      id: "1",
-      name: "Anna",
-      gender: "Male",
-      age: 25,
-      imageUrls: [
-        "https://plus.unsplash.com/premium_photo-1683121366070-5ceb7e007a97?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1533749047139-189de3cf06d3?q=80&w=1936&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1533749047139-189de3cf06d3?q=80&w=1936&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      ],
-      interests: ["Music", "Politics", "Hiking"],
-      bio: "This is Anna's bio",
-      jobTitle: "Software Engineer",
-      // location: "Makati",
-    ),
-    const User(
-      id: "2",
-      name: "John",
-      gender: "Female",
-      age: 30,
-      imageUrls: [
-        "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1630557802087-0288adfc7cfd?q=80&w=3348&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1541480601022-2308c0f02487?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      ],
-      interests: ["Music", "Politics", "Hiking"],
-      bio: "This is John's bio",
-      jobTitle: "Data Analyst",
-      // location: "Singapore",
-    ),
-    const User(
-      id: "3",
-      name: "Emily",
-      age: 28,
-      gender: "Female",
-      imageUrls: [
-        "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1550534791-2677533605ab?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://images.unsplash.com/photo-1550534791-2677533605ab?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      ],
-      interests: ["Music", "Politics", "Hiking"],
-      bio: "This is Emily's bio",
-      jobTitle: "Marketing Manager",
-      // location: "Philippines",
-    ),
-    const User(
-      id: "4",
-      name: "Michael",
-      age: 35,
-      gender: "Male",
-      imageUrls: [
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://plus.unsplash.com/premium_photo-1677797873738-b9e95d16b41a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        "https://plus.unsplash.com/premium_photo-1677797873738-b9e95d16b41a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      ],
-      interests: ["Music", "Politics", "Hiking"],
-      bio: "This is Michael's bio",
-      jobTitle: "Computer Engineer",
-      // location: "Taiwan",
-    ),
-  ];
 }

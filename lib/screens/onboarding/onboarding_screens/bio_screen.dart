@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:start_date/blocs/auth/auth_bloc.dart';
 import 'package:start_date/blocs/onboarding/onboarding_bloc.dart';
+import 'package:start_date/screens/home/invitation_screen.dart';
 import 'package:start_date/screens/onboarding/onboarding_screen.dart';
 import 'package:start_date/widgets/custom_text_container.dart';
 import 'package:start_date/widgets/custom_text_field.dart';
@@ -23,15 +25,18 @@ class BioTab extends StatelessWidget {
     return OnboardingScreenLayout(
       currentStep: 5,
       onPressed: () {
-        context
-            .read<OnboardingBloc>()
-            .add(ContinueOnboarding(user: state.user));
+        // context
+        //     .read<OnboardingBloc>()
+        //     .add(ContinueOnboarding(user: state.user));
 
         context.read<OnboardingBloc>().add(UpdateUser(
                 user: state.user.copyWith(
               bio: bio.text,
               jobTitle: jobTitle.text,
             )));
+
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const InvitationScreen()));
       },
       children: [
         const CustomTextHeader(

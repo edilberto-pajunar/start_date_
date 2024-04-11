@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:start_date/models/partner_model.dart';
@@ -84,12 +83,12 @@ class DatabaseRepository extends BaseDatabaseRepository {
         "swipeLeft": FieldValue.arrayUnion([user.id, user.partner!.partnerId])
       });
 
-      await _firebaseFirestore
-          .collection("users")
-          .doc(currentUser.partner!.partnerId)
-          .update({
-        "swipeLeft": FieldValue.arrayUnion([user.id, user.partner!.partnerId])
-      });
+      // await _firebaseFirestore
+      //     .collection("users")
+      //     .doc(currentUser.partner!.partnerId)
+      //     .update({
+      //   "swipeLeft": FieldValue.arrayUnion([user.id, user.partner!.partnerId])
+      // });
     }
   }
 
@@ -157,7 +156,7 @@ class DatabaseRepository extends BaseDatabaseRepository {
     ) {
       return users
           .where((user) => currentUser.matches!.contains(user.id))
-          .map((user) => Match(userId: user.id!, matchedUser: user))
+          .map((user) => Match(userId: user.id!, matchUser: user))
           .toList();
     });
   }
@@ -203,7 +202,6 @@ class DatabaseRepository extends BaseDatabaseRepository {
         User user = User.fromSnapshot(doc);
         Partner partner =
             Partner.fromJson((doc["partner"]) as Map<String, dynamic>);
-
 
         if (generatedCode == partner.generatedCode && !partner.isTaken) {
           await _firebaseFirestore

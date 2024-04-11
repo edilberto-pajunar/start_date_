@@ -4,15 +4,15 @@ import 'package:start_date/models/match_model.dart';
 class ChatScreen extends StatelessWidget {
   const ChatScreen({
     super.key,
-    required this.match,
+    this.match,
   });
 
-  final Match match;
+  final Match? match;
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    var messageCount = (match.chat == null) ? 0 : match.chat.messages.length;
+    var messageCount = (match!.chat == null) ? 0 : match!.chat!.messages.length;
 
     return Scaffold(
       appBar: AppBar(
@@ -32,10 +32,10 @@ class ChatScreen extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 15.0,
-            backgroundImage: NetworkImage(match.matchUser.imageUrls[0]),
+            backgroundImage: NetworkImage(match!.matchUser.imageUrls[0]),
           ),
           Text(
-            match.matchUser.name,
+            match!.matchUser.name,
           ),
           // Expanded(
           //   child: SingleChildScrollView(

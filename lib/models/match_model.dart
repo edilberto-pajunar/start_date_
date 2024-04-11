@@ -6,12 +6,12 @@ import 'package:start_date/models/user_model.dart';
 class Match extends Equatable {
   final String userId;
   final User matchUser;
-  final Chat chat;
+  final Chat? chat;
 
   const Match({
     required this.userId,
     required this.matchUser,
-    required this.chat,
+    this.chat,
   });
 
 

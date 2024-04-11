@@ -38,9 +38,9 @@ class OnboardingScreen extends StatelessWidget {
     Tab(
       text: "Bio",
     ),
-    Tab(
-      text: "Location",
-    ),
+    // Tab(
+    //   text: "Location",
+    // ),
   ];
 
   @override
@@ -95,7 +95,7 @@ class OnboardingScreen extends StatelessWidget {
                           DemoTab(state: state),
                           PicturesTab(state: state),
                           BioTab(state: state),
-                          LocationTab(state: state),
+                          // LocationTab(state: state),
                         ],
                       );
                     } else {
@@ -145,7 +145,7 @@ class OnboardingScreenLayout extends StatelessWidget {
                   SizedBox(
                     height: 75,
                     child: StepProgressIndicator(
-                      totalSteps: 6,
+                      totalSteps: 5,
                       currentStep: currentStep,
                       selectedColor: Colors.black,
                       unselectedColor: Colors.white,

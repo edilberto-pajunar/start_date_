@@ -112,22 +112,22 @@ class ChatsList extends StatelessWidget {
           child: Row(
             children: [
               UserImageSmall(
-                imageUrl: activeMatches[index].matchedUser.imageUrls[0],
+                imageUrl: activeMatches[index].matchUser.imageUrls[0],
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    activeMatches[index].matchedUser.name,
+                    activeMatches[index].matchUser.name,
                     style: theme.textTheme.bodyLarge!.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
-                    activeMatches[index].chat![0].messages[0].message,
+                    activeMatches[index].chat!.messages[0].message,
                   ),
                   Text(
-                    activeMatches[index].chat![0].messages[0].timeString,
+                    activeMatches[index].chat!.messages[0].timeString,
                   ),
                 ],
               ),
@@ -161,10 +161,10 @@ class MatchesList extends StatelessWidget {
               UserImageSmall(
                 height: 70,
                 width: 70,
-                imageUrl: inactiveMatches[index].matchedUser.imageUrls[0],
+                imageUrl: inactiveMatches[index].matchUser.imageUrls[0],
               ),
               Text(
-                inactiveMatches[index].matchedUser.name,
+                inactiveMatches[index].matchUser.name,
               ),
             ],
           );

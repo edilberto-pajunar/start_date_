@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:start_date/blocs/auth/auth_bloc.dart';
 import 'package:start_date/blocs/onboarding/onboarding_bloc.dart';
+import 'package:start_date/cubits/signup/signup_cubit.dart';
 import 'package:start_date/screens/onboarding/onboarding_screen.dart';
 import 'package:start_date/widgets/custom_checkbox.dart';
 import 'package:start_date/widgets/custom_text_field.dart';
@@ -22,15 +24,17 @@ class DemoTab extends StatelessWidget {
     return OnboardingScreenLayout(
       currentStep: 3,
       onPressed: () {
+        context.read<OnboardingBloc>().add(UpdateUser(
+              user: state.user.copyWith(
+                id: context.read<AuthBloc>().state.authUser!.uid,
+                name: name.text,
+                age: int.parse(age.text),
+              ),
+            ));
+
         context
             .read<OnboardingBloc>()
             .add(ContinueOnboarding(user: state.user));
-
-        context.read<OnboardingBloc>().add(UpdateUser(
-                user: state.user.copyWith(
-              name: name.text,
-              age: int.parse(age.text),
-            )));
       },
       children: [
         const CustomTextHeader(

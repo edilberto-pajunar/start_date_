@@ -15,7 +15,7 @@ class CustomTextContainer extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 10.0, right: 5.0),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5.0),
           color: Colors.black,

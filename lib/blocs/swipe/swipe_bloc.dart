@@ -13,6 +13,7 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
   final AuthBloc _authBloc;
   final DatabaseRepository _databaseRepository;
   StreamSubscription? _authSubscription;
+  StreamSubscription? _partnerSubscription;
 
   SwipeBloc({
     required AuthBloc authBloc,
@@ -30,9 +31,17 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
         add(LoadUsers());
       }
     });
+
+    User currentUser = _authBloc.state.user!;
+
+    _partnerSubscription = _databaseRepository
+        .getUser(currentUser.partner!.partnerId)
+        .listen((state) {
+      add(LoadUsers());
+    });
   }
 
-  void _onLoadUsers(LoadUsers event, emit) {
+  void _onLoadUsers(LoadUsers event, emit) async {
     if (_authBloc.state.user != null) {
       User currentUser = _authBloc.state.user!;
       List<String> userFilter = List.from(currentUser.swipeLeft!)
@@ -40,13 +49,18 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
         ..add(currentUser.id!)
         ..add(currentUser.partner!.partnerId);
 
+      final User partner = await _databaseRepository
+          .getUser(currentUser.partner!.partnerId)
+          .first;
+
       _databaseRepository.getUsersToSwipe(currentUser).listen((users) {
-        print("Loading Users: $users");
+        print("Loading Users...");
         add(UpdateHome(
           users: users
               .where((element) => !userFilter.contains(element.id))
               .where((element) => element.partner!.isTaken)
               .toList(),
+          partner: partner,
         ));
       });
     }
@@ -54,7 +68,12 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
 
   void _onUpdateHome(UpdateHome event, emit) {
     if (event.users!.isNotEmpty) {
-      emit(SwipeLoaded(users: event.users!));
+      emit(
+        SwipeLoaded(
+          users: event.users!,
+          partner: event.partner,
+        ),
+      );
     } else {
       emit(SwipeError());
     }
@@ -111,6 +130,7 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
   @override
   Future<void> close() async {
     _authSubscription?.cancel();
+    _partnerSubscription?.cancel();
     super.close();
   }
 }

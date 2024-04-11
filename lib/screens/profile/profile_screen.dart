@@ -157,10 +157,10 @@ class ProfileScreen extends StatelessWidget {
                         const SizedBox(height: 10.0),
                         const _Interests(),
                         const SizedBox(height: 10.0),
-                        _Location(
-                          title: "Location",
-                          value: state.user.location!.name,
-                        ),
+                        // _Location(
+                        //   title: "Location",
+                        //   value: state.user.location!.name,
+                        // ),
                         const SizedBox(height: 10.0),
                         const _SignOut(),
                       ],

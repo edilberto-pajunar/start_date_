@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:start_date/blocs/auth/auth_bloc.dart';
 import 'package:start_date/blocs/onboarding/onboarding_bloc.dart';
-import 'package:start_date/screens/home/home_screen.dart';
 import 'package:start_date/screens/onboarding/onboarding_screen.dart';
 import 'package:start_date/widgets/custom_text_field.dart';
 import 'package:start_date/widgets/custom_text_header.dart';

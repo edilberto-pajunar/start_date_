@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:start_date/models/user_model.dart';
 import 'package:start_date/widgets/user_image.dart';
 
@@ -6,11 +7,13 @@ class UserCard extends StatelessWidget {
   const UserCard({
     required this.user,
     required this.heroTag,
+    required this.partner,
     super.key,
   });
 
   final User user;
   final String heroTag;
+  final User partner;
 
   @override
   Widget build(BuildContext context) {
@@ -32,13 +35,29 @@ class UserCard extends StatelessWidget {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5.0),
-                  gradient: const LinearGradient(
+                  gradient: LinearGradient(
                     colors: [
-                      Color.fromARGB(200, 0, 0, 0),
-                      Color.fromARGB(0, 0, 0, 0),
+                      Colors.orange.withOpacity(0.5),
+                      Colors.black.withOpacity(0.1),
                     ],
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: partner.swipeLeft!.contains(user.id) ||
+                    partner.swipeRight!.contains(user.id),
+                child: Positioned(
+                  top: 20,
+                  right: 10,
+                  child: Icon(
+                    partner.swipeRight!.contains(user.id)
+                        ? Icons.favorite
+                        : Icons.heart_broken,
+                    color: partner.swipeRight!.contains(user.id)
+                        ? Colors.red
+                        : Colors.orange,
                   ),
                 ),
               ),
